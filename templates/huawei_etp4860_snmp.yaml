@@ -92,14 +92,14 @@ zabbix_export:
         - tag: target
           value: huawei-etp4860
       value_maps:
-        - uuid: vm000000000000000000000000000001
+        - uuid: c435780679164a3d94bb6a11e20b0e40
           name: 'Huawei ETP4860: hwSiteRunningStatus'
           mappings:
             - value: '1'
               newvalue: Normal
             - value: '2'
               newvalue: Alarme
-        - uuid: vm000000000000000000000000000002
+        - uuid: 57aa2652399040058285bd126c5a780c
           name: 'Huawei ETP4860: hwMonitorOperStatus'
           mappings:
             - value: '1'
@@ -114,7 +114,7 @@ zabbix_export:
               newvalue: Alarme Restaurado
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000003
+        - uuid: 82e2f472d9664baba74490bb4dcdd76b
           name: 'Huawei ETP4860: hwRectOperStatus'
           mappings:
             - value: '1'
@@ -139,7 +139,7 @@ zabbix_export:
               newvalue: Alarme Restaurado
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000004
+        - uuid: d083835a4c3b406fba6c2f3c224571ea
           name: 'Huawei ETP4860: hwBattsChargeStatus'
           mappings:
             - value: '1'
@@ -154,7 +154,7 @@ zabbix_export:
               newvalue: Offline
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000005
+        - uuid: 9141f945a8da4d8297984b144c0da550
           name: 'Huawei ETP4860: hwBattStringOperStatus'
           mappings:
             - value: '1'
@@ -177,7 +177,7 @@ zabbix_export:
               newvalue: Alarme Restaurado
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000006
+        - uuid: 242746e85dbd4a3fa796d931f3f07821
           name: 'Huawei ETP4860: hwAcInputOperStatus'
           mappings:
             - value: '1'
@@ -198,7 +198,7 @@ zabbix_export:
               newvalue: Alarme Restaurado
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000007
+        - uuid: cf34064fcf6b47ada1297c5875d30d7a
           name: 'Huawei ETP4860: hwDcOutputOperStatus'
           mappings:
             - value: '1'
@@ -215,7 +215,7 @@ zabbix_export:
               newvalue: Alarme Restaurado
             - value: '255'
               newvalue: Desconhecido
-        - uuid: vm000000000000000000000000000008
+        - uuid: 885db7b806684b0c8ef5b1c1d338a59f
           name: 'Huawei ETP4860: hwLvdBranchOperStatus'
           mappings:
             - value: '1'
@@ -245,7 +245,7 @@ zabbix_export:
       # ------------------------------------------------------------------ #
       items:
         # -- System / Availability --
-        - uuid: it000000000000000000000000000001
+        - uuid: 7ce7f5cfdae7484fa48d20c7b974458b
           name: 'Tempo de funcionamento do sistema'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.2.1.1.3.0'
@@ -265,7 +265,7 @@ zabbix_export:
             - type: MULTIPLIER
               parameters:
                 - '0.01'
-        - uuid: it000000000000000000000000000002
+        - uuid: fcd749a505b5427986b6c74dc42cc047
           name: 'Status do site'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.1.10.0'
@@ -282,7 +282,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
-        - uuid: it000000000000000000000000000003
+        - uuid: 6fb7ab0f18904334b05ce1accc11d97a
           name: 'Nome do site'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.1.2.0'
@@ -296,7 +296,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: inventory
-        - uuid: it000000000000000000000000000004
+        - uuid: a74e2084071347a7825b29309349a508
           name: 'Quantidade de alarmes ativos'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.2.3.0'
@@ -311,7 +311,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
-        - uuid: it000000000000000000000000000005
+        - uuid: 21a5e1e355874e74894ed4b6cca92ecf
           name: 'Status do módulo monitor'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.2.2.1.1.99.1'
@@ -328,7 +328,7 @@ zabbix_export:
               value: monitor
             - tag: scope
               value: availability
-        - uuid: it000000000000000000000000000006
+        - uuid: 3cc23899d0f747fca75ad225873c5c1f
           name: 'Versão do firmware do monitor'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.2.2.1.1.5.1'
@@ -344,7 +344,7 @@ zabbix_export:
             - tag: scope
               value: inventory
         # -- Rectifier Group Scalars --
-        - uuid: it000000000000000000000000000007
+        - uuid: 2c14ee0ceed24b5ea850d8227e2f20b7
           name: 'Retificadores: Corrente total CC'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.3.0'
@@ -369,7 +369,7 @@ zabbix_export:
                 - '0'
                 - '20000'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000008
+        - uuid: 16beada243ea4eaea8729648e45aaf97
           name: 'Retificadores: Quantidade total'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.4.0'
@@ -385,7 +385,7 @@ zabbix_export:
               value: rectifier
             - tag: scope
               value: inventory
-        - uuid: it000000000000000000000000000009
+        - uuid: 92bf2265f30340818a012ddf2f707cad
           name: 'Retificadores: Potência CC total'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.9.0'
@@ -401,7 +401,7 @@ zabbix_export:
               value: rectifier
             - tag: scope
               value: performance
-        - uuid: it000000000000000000000000000010
+        - uuid: 62d9086c11164208b204d5390580fc86
           name: 'Retificadores: Uso de carga'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.10.0'
@@ -417,7 +417,7 @@ zabbix_export:
               value: rectifier
             - tag: scope
               value: performance
-        - uuid: it000000000000000000000000000011
+        - uuid: c216b6a962d24e95b22a7fd261f5be22
           name: 'Retificadores: Potência CA total de entrada'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.11.0'
@@ -434,7 +434,7 @@ zabbix_export:
             - tag: scope
               value: performance
         # -- Battery Group Scalars --
-        - uuid: it000000000000000000000000000012
+        - uuid: 44c3541e8cad41ceadea9b100a6fcd23
           name: 'Bateria: Corrente total do banco'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.1.0'
@@ -459,7 +459,7 @@ zabbix_export:
                 - '-40000'
                 - '40000'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000013
+        - uuid: e6506765a9f147c1afa9ab3369f101e2
           name: 'Bateria: Tempo estimado de backup'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.2.0'
@@ -481,7 +481,7 @@ zabbix_export:
                 - '0'
                 - '15360'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000014
+        - uuid: d9a1951fe4e04d09a1c8ebfc67ed211d
           name: 'Bateria: Estado de carga'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.3.0'
@@ -498,7 +498,7 @@ zabbix_export:
               value: battery
             - tag: scope
               value: availability
-        - uuid: it000000000000000000000000000015
+        - uuid: 0035b98bc2704208b96bc538bc515481
           name: 'Bateria: Capacidade restante'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.9.0'
@@ -520,7 +520,7 @@ zabbix_export:
                 - '0'
                 - '2000000'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000016
+        - uuid: 51111d287116485c8edef7869fe67642
           name: 'Bateria: SOC total (%)'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.10.0'
@@ -537,7 +537,7 @@ zabbix_export:
             - tag: scope
               value: performance
         # -- AC Group Scalars --
-        - uuid: it000000000000000000000000000017
+        - uuid: 23cbf9219682402799c7023ecf9f68b7
           name: 'CA: Corrente total de entrada'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.1.3.0'
@@ -562,7 +562,7 @@ zabbix_export:
                 - '0'
                 - '1000'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000018
+        - uuid: 255c14c98dcb4eb385d927856e033bab
           name: 'CA: Quantidade de entradas'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.1.4.0'
@@ -579,7 +579,7 @@ zabbix_export:
             - tag: scope
               value: inventory
         # -- DC Group Scalars --
-        - uuid: it000000000000000000000000000019
+        - uuid: 3b438bd48ca846a1a22ba8ddfc5a9de2
           name: 'CC: Tensão do barramento'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.3.0'
@@ -604,7 +604,7 @@ zabbix_export:
                 - '0'
                 - '100'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000020
+        - uuid: 6d19306cca784dbbbeba946c5a8bf926
           name: 'CC: Corrente total'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.4.0'
@@ -629,7 +629,7 @@ zabbix_export:
                 - '-30000'
                 - '30000'
               error_handler: DISCARD_VALUE
-        - uuid: it000000000000000000000000000021
+        - uuid: 894877790520477f8220de2c26a5c08d
           name: 'CC: Potência total'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.5.0'
@@ -645,7 +645,7 @@ zabbix_export:
               value: dc
             - tag: scope
               value: performance
-        - uuid: it000000000000000000000000000022
+        - uuid: cf4276138b4145c98cc75e7432783d4c
           name: 'CC: Consumo de energia acumulado'
           type: SNMP_AGENT
           snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.9.0'
@@ -665,7 +665,7 @@ zabbix_export:
       # TEMPLATE-LEVEL TRIGGERS                                             #
       # ------------------------------------------------------------------ #
       triggers:
-        - uuid: tr000000000000000000000000000001
+        - uuid: 28a53401b1ab4088a3a7b43bb98fc439
           name: 'Site em estado de alarme'
           expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=2'
           recovery_mode: RECOVERY_EXPRESSION
@@ -677,7 +677,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000002
+        - uuid: b81376e787344fbb8435ce969b6ff0fc
           name: 'SNMP sem resposta por {$SNMP.TIMEOUT}'
           expression: 'nodata(/Huawei ETP4860 Power System SNMP/sys.uptime,{$SNMP.TIMEOUT})=1'
           priority: HIGH
@@ -687,7 +687,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000003
+        - uuid: a313154cbc5943129b5b47f6d1221352
           name: 'Dispositivo reinicializado (uptime < 10 min)'
           expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)<600'
           recovery_mode: RECOVERY_EXPRESSION
@@ -699,7 +699,7 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000004
+        - uuid: 6ce257a7482342c882f60674f712d747
           name: 'Módulo monitor com falha'
           expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)<>1'
           recovery_mode: RECOVERY_EXPRESSION
@@ -711,7 +711,7 @@ zabbix_export:
               value: monitor
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000005
+        - uuid: 2e144b79806048fcba030135a50eb56b
           name: 'Bateria em descarga'
           expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
           recovery_mode: RECOVERY_EXPRESSION
@@ -723,7 +723,7 @@ zabbix_export:
               value: battery
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000006
+        - uuid: ce5122a5bc5e4215960a7c9ca547713d
           name: 'Bateria: SOC abaixo de {$BATT.SOC.MIN}%'
           expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)<{$BATT.SOC.MIN}'
           recovery_mode: RECOVERY_EXPRESSION
@@ -738,7 +738,7 @@ zabbix_export:
               value: battery
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000007
+        - uuid: d8ab37caf32f4f609725d67862d7fbd9
           name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} min'
           expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
           recovery_mode: RECOVERY_EXPRESSION
@@ -750,7 +750,7 @@ zabbix_export:
               value: battery
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000008
+        - uuid: 2298f99cfb694760b82da861492dc0a2
           name: 'CC: Tensão do barramento abaixo de {$VDC.MIN} V'
           expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<{$VDC.MIN}'
           recovery_mode: RECOVERY_EXPRESSION
@@ -762,7 +762,7 @@ zabbix_export:
               value: dc
             - tag: scope
               value: availability
-        - uuid: tr000000000000000000000000000009
+        - uuid: e46bd0631fa24626b3b88e407cb49394
           name: 'CC: Tensão do barramento acima de {$VDC.MAX} V'
           expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>{$VDC.MAX}'
           recovery_mode: RECOVERY_EXPRESSION
@@ -779,7 +779,7 @@ zabbix_export:
       # ------------------------------------------------------------------ #
       discovery_rules:
         # ---- 1. Rectifier Modules ----
-        - uuid: dr000000000000000000000000000001
+        - uuid: 36c32414d5d444c2aeda42b187325a2a
           name: 'Descoberta de Módulos Retificadores'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.3.2.1.1.1,{#RECTNAME},1.3.6.1.4.1.2011.6.164.1.3.2.1.1.3]'
@@ -787,7 +787,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers rectifier modules via hwRectConfigTable (indices 28672–30719).'
           item_prototypes:
-            - uuid: ip000000000000000000000000000001
+            - uuid: 3f87bc2ddc5e4fc9b14d124aded9769c
               name: 'Retificador {#RECTNAME}: Nome'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.1.1.3.{#SNMPINDEX}'
@@ -802,7 +802,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: inventory
-            - uuid: ip000000000000000000000000000002
+            - uuid: 4c3ca84120074f72905525f8c36001c8
               name: 'Retificador {#RECTNAME}: Status operacional'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.99.{#SNMPINDEX}'
@@ -819,7 +819,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: availability
-            - uuid: ip000000000000000000000000000003
+            - uuid: 99818afc40ae44c99a0fe57b56c91dc6
               name: 'Retificador {#RECTNAME}: Corrente de saída CC'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.2.{#SNMPINDEX}'
@@ -844,7 +844,7 @@ zabbix_export:
                     - '0'
                     - '300'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000004
+            - uuid: 5dbb860503644fa7a312797b3956433a
               name: 'Retificador {#RECTNAME}: Tensão de saída CC'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.3.{#SNMPINDEX}'
@@ -869,7 +869,7 @@ zabbix_export:
                     - '0'
                     - '65'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000005
+            - uuid: 54fbba45148f4ce0a67b2a73e8ed73b0
               name: 'Retificador {#RECTNAME}: Potência CC de saída'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.5.{#SNMPINDEX}'
@@ -891,7 +891,7 @@ zabbix_export:
                     - '0'
                     - '30000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000006
+            - uuid: 5ba999898e7d42d08df89e53a4dca327
               name: 'Retificador {#RECTNAME}: Tensão CA de entrada'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.6.{#SNMPINDEX}'
@@ -916,7 +916,7 @@ zabbix_export:
                     - '0'
                     - '600'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000007
+            - uuid: 4877ed9e8f18480e9b501c8ad5a017c2
               name: 'Retificador {#RECTNAME}: Eficiência'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.7.{#SNMPINDEX}'
@@ -932,7 +932,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: performance
-            - uuid: ip000000000000000000000000000008
+            - uuid: 2b3d2612e518480d9fc94179e7fa00c0
               name: 'Retificador {#RECTNAME}: Temperatura'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.8.{#SNMPINDEX}'
@@ -958,7 +958,7 @@ zabbix_export:
                     - '150'
                   error_handler: DISCARD_VALUE
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000001
+            - uuid: 3a47aacbb0164fd7a1bd0fb6144bc24c
               name: 'Retificador {#RECTNAME}: Falha crítica (fault/commFail/rectLost)'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=2
@@ -973,7 +973,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000002
+            - uuid: 7f37b4e74c91442c8363ae2c8c59a241
               name: 'Retificador {#RECTNAME}: CA ausente (acOff)'
               expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=8'
               recovery_mode: RECOVERY_EXPRESSION
@@ -985,7 +985,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000003
+            - uuid: f7e2af9dc7ab4164858e4c6f1cdcb2fd
               name: 'Retificador {#RECTNAME}: Em proteção ou desligado'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=3
@@ -999,7 +999,7 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000004
+            - uuid: 6989ecf2412b433abc678100246fcf67
               name: 'Retificador {#RECTNAME}: Temperatura alta (>{$RECT.TEMP.MAX}°C)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/rect.temperature[{#SNMPINDEX}],#3)>{$RECT.TEMP.MAX}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1012,7 +1012,7 @@ zabbix_export:
                 - tag: scope
                   value: performance
         # ---- 2. Battery Strings ----
-        - uuid: dr000000000000000000000000000002
+        - uuid: 6916292a04a546aea1c73ec2a0526647
           name: 'Descoberta de Strings de Bateria'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.4.4.1.1.1,{#BATTNAME},1.3.6.1.4.1.2011.6.164.1.4.4.1.1.3]'
@@ -1020,7 +1020,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers battery strings via hwBattStringConfigTable. Note: indices are not necessarily sequential (e.g., index 5 for the first string).'
           item_prototypes:
-            - uuid: ip000000000000000000000000000009
+            - uuid: 4396f5f220084fac9f0fae8a79559326
               name: 'String Bateria {#BATTNAME}: Nome'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.1.1.3.{#SNMPINDEX}'
@@ -1034,7 +1034,7 @@ zabbix_export:
                   value: battery
                 - tag: scope
                   value: inventory
-            - uuid: ip000000000000000000000000000010
+            - uuid: 742b6de71ed447a3b5bda7afd7c1a3c5
               name: 'String Bateria {#BATTNAME}: Status operacional'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.99.{#SNMPINDEX}'
@@ -1051,7 +1051,7 @@ zabbix_export:
                   value: battery
                 - tag: scope
                   value: availability
-            - uuid: ip000000000000000000000000000011
+            - uuid: eede6a2c2d8d4b2a92753523340d4684
               name: 'String Bateria {#BATTNAME}: Corrente'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.2.{#SNMPINDEX}'
@@ -1076,7 +1076,7 @@ zabbix_export:
                     - '-1000'
                     - '1000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000012
+            - uuid: f070924e5e5e4d82b5eee16c2164773a
               name: 'String Bateria {#BATTNAME}: SOC (%)'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.3.{#SNMPINDEX}'
@@ -1101,7 +1101,7 @@ zabbix_export:
                     - '0'
                     - '100'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000013
+            - uuid: bf39b48f2c7a430ca0cf32a8faf6d51f
               name: 'String Bateria {#BATTNAME}: Capacidade restante'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.4.{#SNMPINDEX}'
@@ -1123,7 +1123,7 @@ zabbix_export:
                     - '0'
                     - '10000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000014
+            - uuid: fb2f6f0c85d3442cab6fd186a0554f2c
               name: 'String Bateria {#BATTNAME}: Temperatura'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.6.{#SNMPINDEX}'
@@ -1148,7 +1148,7 @@ zabbix_export:
                     - '-50'
                     - '100'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000015
+            - uuid: 73264e4a5cf949df874335dfc0b6d281
               name: 'String Bateria {#BATTNAME}: Tensão midpoint'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.7.{#SNMPINDEX}'
@@ -1174,7 +1174,7 @@ zabbix_export:
                     - '90'
                   error_handler: DISCARD_VALUE
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000005
+            - uuid: 051c51d9c7f0499ea52bae7665352f63
               name: 'String Bateria {#BATTNAME}: Falha crítica'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=4
@@ -1189,7 +1189,7 @@ zabbix_export:
                   value: battery
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000006
+            - uuid: 17f808cd29974911aceae644a68ea56e
               name: 'String Bateria {#BATTNAME}: Temperatura anormal'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=2
@@ -1203,7 +1203,7 @@ zabbix_export:
                   value: battery
                 - tag: scope
                   value: performance
-            - uuid: tp000000000000000000000000000007
+            - uuid: 2e8e664e41e446cd929d3c16df4803e0
               name: 'String Bateria {#BATTNAME}: Temperatura alta (>{$BATT.TEMP.MAX}°C)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/batt.string.temperature[{#SNMPINDEX}],#3)>{$BATT.TEMP.MAX}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1216,7 +1216,7 @@ zabbix_export:
                 - tag: scope
                   value: performance
         # ---- 3. AC Inputs ----
-        - uuid: dr000000000000000000000000000003
+        - uuid: c42b655c489a4eb59384a103144f88f6
           name: 'Descoberta de Entradas CA'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.5.2.1.1.1,{#ACNAME},1.3.6.1.4.1.2011.6.164.1.5.2.1.1.3]'
@@ -1224,7 +1224,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers AC distribution units via hwAcInputTable.'
           item_prototypes:
-            - uuid: ip000000000000000000000000000016
+            - uuid: ef67c4f5c62d47d789d073762e9bc88d
               name: 'CA {#ACNAME}: Status operacional'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.99.{#SNMPINDEX}'
@@ -1241,7 +1241,7 @@ zabbix_export:
                   value: ac
                 - tag: scope
                   value: availability
-            - uuid: ip000000000000000000000000000017
+            - uuid: c5035208937b4518b582e9385414cbb6
               name: 'CA {#ACNAME}: Tensão Fase A'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.4.{#SNMPINDEX}'
@@ -1266,7 +1266,7 @@ zabbix_export:
                     - '0'
                     - '600'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000018
+            - uuid: a6e48d2e69704767b68efe6f548cd169
               name: 'CA {#ACNAME}: Tensão Fase B'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.5.{#SNMPINDEX}'
@@ -1291,7 +1291,7 @@ zabbix_export:
                     - '0'
                     - '600'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000019
+            - uuid: b6502b1738124f03a22f1d0bbf4ba655
               name: 'CA {#ACNAME}: Tensão Fase C'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.6.{#SNMPINDEX}'
@@ -1316,7 +1316,7 @@ zabbix_export:
                     - '0'
                     - '600'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000020
+            - uuid: 308565fa9294444d84d50ee3d0619401
               name: 'CA {#ACNAME}: Corrente Fase A'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.7.{#SNMPINDEX}'
@@ -1341,7 +1341,7 @@ zabbix_export:
                     - '0'
                     - '20000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000021
+            - uuid: e8bb92b7d0ec49e8b4017ae55dbf0643
               name: 'CA {#ACNAME}: Corrente Fase B'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.8.{#SNMPINDEX}'
@@ -1366,7 +1366,7 @@ zabbix_export:
                     - '0'
                     - '20000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000022
+            - uuid: b7935d44161c4d33aa9e40dda0eb84cd
               name: 'CA {#ACNAME}: Corrente Fase C'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.9.{#SNMPINDEX}'
@@ -1392,7 +1392,7 @@ zabbix_export:
                     - '20000'
                   error_handler: DISCARD_VALUE
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000008
+            - uuid: ba8eb70d5b494f8bade6595a92a58c72
               name: 'CA {#ACNAME}: Falha de alimentação CA (acOff/Fase ausente)'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/ac.input.oper.status[{#SNMPINDEX}])=2
@@ -1406,7 +1406,7 @@ zabbix_export:
                   value: ac
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000009
+            - uuid: 42c4bd9d98c74ea499a38e9170fb569d
               name: 'CA {#ACNAME}: Tensão CA fora da faixa'
               expression: |
                 min(/Huawei ETP4860 Power System SNMP/ac.volt.a[{#SNMPINDEX}],#3)>{$AC.VOLT.MAX}
@@ -1431,7 +1431,7 @@ zabbix_export:
                 - tag: scope
                   value: performance
         # ---- 4. DC Outputs ----
-        - uuid: dr000000000000000000000000000004
+        - uuid: 98d7112675e34353bbaa152a77d5ecdb
           name: 'Descoberta de Saídas CC'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.6.2.1.1.1,{#DCNAME},1.3.6.1.4.1.2011.6.164.1.6.2.1.1.3]'
@@ -1439,7 +1439,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers DC distribution units via hwDcOutputTable.'
           item_prototypes:
-            - uuid: ip000000000000000000000000000023
+            - uuid: 54e6d48eedf4413c925e67256fdaceeb
               name: 'CC {#DCNAME}: Status operacional'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.99.{#SNMPINDEX}'
@@ -1456,7 +1456,7 @@ zabbix_export:
                   value: dc
                 - tag: scope
                   value: availability
-            - uuid: ip000000000000000000000000000024
+            - uuid: 4c67466c444a4255b73f56f41e43fc83
               name: 'CC {#DCNAME}: Tensão CC'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.4.{#SNMPINDEX}'
@@ -1481,7 +1481,7 @@ zabbix_export:
                     - '0'
                     - '100'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000025
+            - uuid: c7790656e680495f938e4b3097a81956
               name: 'CC {#DCNAME}: Corrente CC'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.5.{#SNMPINDEX}'
@@ -1506,7 +1506,7 @@ zabbix_export:
                     - '-30000'
                     - '30000'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000026
+            - uuid: bff28c83b3fe42aeaec653400ed655ff
               name: 'CC {#DCNAME}: Potência CC'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.6.{#SNMPINDEX}'
@@ -1522,7 +1522,7 @@ zabbix_export:
                   value: dc
                 - tag: scope
                   value: performance
-            - uuid: ip000000000000000000000000000027
+            - uuid: f113587e62364758a8553ff31d649202
               name: 'CC {#DCNAME}: Uso de carga'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.8.{#SNMPINDEX}'
@@ -1539,7 +1539,7 @@ zabbix_export:
                 - tag: scope
                   value: performance
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000010
+            - uuid: c8e2f82a62774619949479a84e410870
               name: 'CC {#DCNAME}: Tensão CC baixa (<{$VDC.MIN} V)'
               expression: 'max(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)<{$VDC.MIN}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1551,7 +1551,7 @@ zabbix_export:
                   value: dc
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000011
+            - uuid: 48533150723341d190b866d3ef6ec2c2
               name: 'CC {#DCNAME}: Tensão CC alta (>{$VDC.MAX} V)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)>{$VDC.MAX}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1563,7 +1563,7 @@ zabbix_export:
                   value: dc
                 - tag: scope
                   value: availability
-            - uuid: tp000000000000000000000000000012
+            - uuid: c29777fc7d7843ce96574b8ceaba7e6c
               name: 'CC {#DCNAME}: Sobrecarga ou ausência CC'
               expression: |
                 last(/Huawei ETP4860 Power System SNMP/dc.output.oper.status[{#SNMPINDEX}])=5
@@ -1578,7 +1578,7 @@ zabbix_export:
                 - tag: scope
                   value: availability
         # ---- 5. LVD Branches ----
-        - uuid: dr000000000000000000000000000005
+        - uuid: 69e36c31519c44098d82cfd0baf645bb
           name: 'Descoberta de Ramos LVD'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.7.2.1.1.1,{#LVDNAME},1.3.6.1.4.1.2011.6.164.1.7.2.1.1.3]'
@@ -1586,7 +1586,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers LVD (Low-Voltage Disconnect) branches via hwLvdBranchTable.'
           item_prototypes:
-            - uuid: ip000000000000000000000000000028
+            - uuid: 27f2a881b32a4d4c9187801aabe7e0a7
               name: 'LVD {#LVDNAME}: Nome'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.3.{#SNMPINDEX}'
@@ -1600,7 +1600,7 @@ zabbix_export:
                   value: lvd
                 - tag: scope
                   value: inventory
-            - uuid: ip000000000000000000000000000029
+            - uuid: 8b46f0908cf648419d31f086b8954186
               name: 'LVD {#LVDNAME}: Status operacional'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.99.{#SNMPINDEX}'
@@ -1617,7 +1617,7 @@ zabbix_export:
                   value: lvd
                 - tag: scope
                   value: availability
-            - uuid: ip000000000000000000000000000030
+            - uuid: 496de619b195475f8aa25fc81db8a835
               name: 'LVD {#LVDNAME}: Tensão de desligamento'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.5.{#SNMPINDEX}'
@@ -1638,7 +1638,7 @@ zabbix_export:
                   parameters:
                     - '0.1'
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000013
+            - uuid: e87fc3a7e1b742cd9ddaa6c5593bb284
               name: 'LVD {#LVDNAME}: Ramo desconectado'
               expression: 'last(/Huawei ETP4860 Power System SNMP/lvd.oper.status[{#SNMPINDEX}])<>1'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1651,7 +1651,7 @@ zabbix_export:
                 - tag: scope
                   value: availability
         # ---- 6. Environment Temperature Sensors ----
-        - uuid: dr000000000000000000000000000006
+        - uuid: cfcb1d81ec0c42f48c9604ce0e7742ec
           name: 'Descoberta de Sensores de Temperatura Ambiente'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.8.2.1.1.1,{#TEMPNAME},1.3.6.1.4.1.2011.6.164.1.8.2.1.1.3]'
@@ -1659,7 +1659,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers environment temperature sensors via hwEnvTempSensorTable.'
           item_prototypes:
-            - uuid: ip000000000000000000000000000031
+            - uuid: 903cd38c8af24c34b77b89a97b8c2723
               name: 'Temperatura Amb. {#TEMPNAME}: Temperatura'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.1.1.4.{#SNMPINDEX}'
@@ -1681,7 +1681,7 @@ zabbix_export:
                     - '-100'
                     - '100'
                   error_handler: DISCARD_VALUE
-            - uuid: ip000000000000000000000000000032
+            - uuid: b6fb04a3a8094d3ea77e01d174d5d09b
               name: 'Temperatura Amb. {#TEMPNAME}: Nome'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.1.1.3.{#SNMPINDEX}'
@@ -1696,7 +1696,7 @@ zabbix_export:
                 - tag: scope
                   value: inventory
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000014
+            - uuid: 8508c397a0054be7b845f0f29a8ba828
               name: 'Temperatura Amb. {#TEMPNAME}: Temperatura alta (>{$ENV.TEMP.MAX}°C)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)>{$ENV.TEMP.MAX}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1708,7 +1708,7 @@ zabbix_export:
                   value: environment
                 - tag: scope
                   value: performance
-            - uuid: tp000000000000000000000000000015
+            - uuid: 423a2105e1f34e89a8b8681cc941cad0
               name: 'Temperatura Amb. {#TEMPNAME}: Temperatura baixa (<{$ENV.TEMP.MIN}°C)'
               expression: 'max(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)<{$ENV.TEMP.MIN}'
               recovery_mode: RECOVERY_EXPRESSION
@@ -1721,7 +1721,7 @@ zabbix_export:
                 - tag: scope
                   value: performance
         # ---- 7. Digital Inputs (Spare Digitals) ----
-        - uuid: dr000000000000000000000000000007
+        - uuid: 0773d9183fd9485c9a3588342012eb59
           name: 'Descoberta de Entradas Digitais'
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.8.2.3.1.1,{#DINAME},1.3.6.1.4.1.2011.6.164.1.8.2.3.1.3]'
@@ -1729,7 +1729,7 @@ zabbix_export:
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers spare digital inputs (DI) via hwSpareDigitalTable.'
           item_prototypes:
-            - uuid: ip000000000000000000000000000033
+            - uuid: 03850a86a27a40a4a559ab39c4ad0327
               name: 'DI {#DINAME}: Nome'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.3.1.3.{#SNMPINDEX}'
@@ -1743,7 +1743,7 @@ zabbix_export:
                   value: environment
                 - tag: scope
                   value: inventory
-            - uuid: ip000000000000000000000000000034
+            - uuid: d4b0904aebbe47eeb2cd8fd79e37bc2d
               name: 'DI {#DINAME}: Status'
               type: SNMP_AGENT
               snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.3.1.99.{#SNMPINDEX}'
@@ -1759,7 +1759,7 @@ zabbix_export:
                 - tag: scope
                   value: availability
           trigger_prototypes:
-            - uuid: tp000000000000000000000000000016
+            - uuid: 37f49a7823b445e1b44425799d71e70a
               name: 'DI {#DINAME}: Entrada digital ativa (status anormal)'
               expression: 'last(/Huawei ETP4860 Power System SNMP/di.oper.status[{#SNMPINDEX}])<>1'
               recovery_mode: RECOVERY_EXPRESSION
