@@ -59,9 +59,9 @@ zabbix_export:
           type: TEXT
           description: 'Battery group minimum State-of-Charge alarm threshold (%). Default 30 %.'
         - macro: '{$BATT.BACKUP.MIN}'
-          value: '30'
+          value: '1'
           type: TEXT
-          description: 'Battery group minimum estimated backup time alarm threshold (min). Default 30 min.'
+          description: 'Battery group minimum backup time alarm threshold (h). Default 1 h. Note: firmware reports hwBattsPreDischargeTime in hours despite MIB stating minutes.'
         - macro: '{$BATT.TEMP.MAX}'
           value: '40'
           type: TEXT
@@ -332,21 +332,6 @@ zabbix_export:
               value: system
             - tag: scope
               value: inventory
-        - uuid: a74e2084071347a7825b29309349a508
-          name: 'Quantidade de alarmes ativos'
-          type: SNMP_AGENT
-          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.2.3.0'
-          key: site.alarm.count
-          delay: '60s'
-          history: '7d'
-          trends: '365d'
-          value_type: UNSIGNED
-          description: 'hwAlarmQuantity. Number of active alarms on the site.'
-          tags:
-            - tag: component
-              value: system
-            - tag: scope
-              value: availability
         - uuid: 21a5e1e355874e74894ed4b6cca92ecf
           name: 'Status do módulo monitor'
           type: SNMP_AGENT
@@ -516,9 +501,9 @@ zabbix_export:
           delay: '60s'
           history: '7d'
           trends: '365d'
-          value_type: UNSIGNED
-          units: min
-          description: 'hwBattsPreDischargeTime. Estimated battery backup time (minutes).'
+          value_type: FLOAT
+          units: h
+          description: 'hwBattsPreDischargeTime. Battery backup time. MIB documents unit as minutes, but firmware reports in hours (confirmed by comparison with device display).'
           tags:
             - tag: component
               value: battery
@@ -532,12 +517,12 @@ zabbix_export:
               error_handler: DISCARD_VALUE
           triggers:
             - uuid: d8ab37caf32f4f609725d67862d7fbd9
-              name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} min'
+              name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} h'
               expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
               recovery_mode: RECOVERY_EXPRESSION
               recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>={$BATT.BACKUP.MIN}'
               priority: HIGH
-              description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} min. Estimated backup time is insufficient.'
+              description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} h. Estimated backup time is insufficient.'
               tags:
                 - tag: component
                   value: battery
