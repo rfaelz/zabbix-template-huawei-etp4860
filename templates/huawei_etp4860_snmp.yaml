@@ -752,7 +752,7 @@ zabbix_export:
         - uuid: 36c32414d5d444c2aeda42b187325a2a
           name: 'Descoberta de Módulos Retificadores'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.3.2.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.1.1.1'
           key: rect.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers rectifier modules via hwRectConfigTable (indices 28672–30719).'
@@ -985,7 +985,7 @@ zabbix_export:
         - uuid: 6916292a04a546aea1c73ec2a0526647
           name: 'Descoberta de Strings de Bateria'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.4.4.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.1.1.1'
           key: batt.string.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers battery strings via hwBattStringConfigTable. Note: indices are not necessarily sequential (e.g., index 5 for the first string).'
@@ -1189,7 +1189,7 @@ zabbix_export:
         - uuid: c42b655c489a4eb59384a103144f88f6
           name: 'Descoberta de Entradas CA'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.5.2.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.1'
           key: ac.input.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers AC distribution units via hwAcInputTable.'
@@ -1404,7 +1404,7 @@ zabbix_export:
         - uuid: 98d7112675e34353bbaa152a77d5ecdb
           name: 'Descoberta de Saídas CC'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.6.2.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.1'
           key: dc.output.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers DC distribution units via hwDcOutputTable.'
@@ -1551,7 +1551,7 @@ zabbix_export:
         - uuid: 69e36c31519c44098d82cfd0baf645bb
           name: 'Descoberta de Ramos LVD'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.7.2.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.1'
           key: lvd.branch.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers LVD (Low-Voltage Disconnect) branches via hwLvdBranchTable.'
@@ -1624,7 +1624,7 @@ zabbix_export:
         - uuid: cfcb1d81ec0c42f48c9604ce0e7742ec
           name: 'Descoberta de Sensores de Temperatura Ambiente'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.8.2.1.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.1.1.1'
           key: env.temp.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers environment temperature sensors via hwEnvTempSensorTable.'
@@ -1694,7 +1694,7 @@ zabbix_export:
         - uuid: 0773d9183fd9485c9a3588342012eb59
           name: 'Descoberta de Entradas Digitais'
           type: SNMP_AGENT
-          snmp_oid: 'walk[1.3.6.1.4.1.2011.6.164.1.8.2.3.1.1]'
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.3.1.1'
           key: di.discovery
           delay: '{$LLD.INTERVAL}'
           description: 'Discovers spare digital inputs (DI) via hwSpareDigitalTable.'
