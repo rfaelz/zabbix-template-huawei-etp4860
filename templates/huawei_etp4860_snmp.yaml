@@ -620,7 +620,8 @@ zabbix_export:
               priority: HIGH
               description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged.'
               dependencies:
-                - name: 'Bateria em descarga'
+                - uuid: 2e144b79806048fcba030135a50eb56b
+                  name: 'Bateria em descarga'
                   expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
               tags:
                 - tag: component
