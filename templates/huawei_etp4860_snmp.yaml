@@ -618,11 +618,7 @@ zabbix_export:
               recovery_mode: RECOVERY_EXPRESSION
               recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)>={$BATT.SOC.MIN}'
               priority: HIGH
-              description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged.'
-              dependencies:
-                - uuid: 2e144b79806048fcba030135a50eb56b
-                  name: 'Bateria em descarga'
-                  expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
+              description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged. Recommended: add a manual dependency on trigger "Bateria em descarga" via the Zabbix UI after import.'
               tags:
                 - tag: component
                   value: battery
