@@ -265,6 +265,29 @@ zabbix_export:
             - type: MULTIPLIER
               parameters:
                 - '0.01'
+          triggers:
+            - uuid: b81376e787344fbb8435ce969b6ff0fc
+              name: 'SNMP sem resposta por {$SNMP.TIMEOUT}'
+              expression: 'nodata(/Huawei ETP4860 Power System SNMP/sys.uptime,{$SNMP.TIMEOUT})=1'
+              priority: HIGH
+              description: 'No SNMP data received within {$SNMP.TIMEOUT}. Device may be unreachable or SNMP misconfigured.'
+              tags:
+                - tag: component
+                  value: system
+                - tag: scope
+                  value: availability
+            - uuid: a313154cbc5943129b5b47f6d1221352
+              name: 'Dispositivo reinicializado (uptime < 10 min)'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)<600'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)>=600'
+              priority: INFO
+              description: 'sysUpTime < 600 s. The device was recently rebooted.'
+              tags:
+                - tag: component
+                  value: system
+                - tag: scope
+                  value: availability
         - uuid: fcd749a505b5427986b6c74dc42cc047
           name: 'Status do site'
           type: SNMP_AGENT
@@ -282,6 +305,19 @@ zabbix_export:
               value: system
             - tag: scope
               value: availability
+          triggers:
+            - uuid: 28a53401b1ab4088a3a7b43bb98fc439
+              name: 'Site em estado de alarme'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=2'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=1'
+              priority: HIGH
+              description: 'hwSiteRunningStatus = alarm(2). One or more active alarms exist on the site.'
+              tags:
+                - tag: component
+                  value: system
+                - tag: scope
+                  value: availability
         - uuid: 6fb7ab0f18904334b05ce1accc11d97a
           name: 'Nome do site'
           type: SNMP_AGENT
@@ -328,6 +364,19 @@ zabbix_export:
               value: monitor
             - tag: scope
               value: availability
+          triggers:
+            - uuid: 6ce257a7482342c882f60674f712d747
+              name: 'Módulo monitor com falha'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)=1'
+              priority: HIGH
+              description: 'hwMonitorOperStatus != normal(1). The iSitePower controller is reporting a fault.'
+              tags:
+                - tag: component
+                  value: monitor
+                - tag: scope
+                  value: availability
         - uuid: 3cc23899d0f747fca75ad225873c5c1f
           name: 'Versão do firmware do monitor'
           type: SNMP_AGENT
@@ -481,6 +530,19 @@ zabbix_export:
                 - '0'
                 - '15360'
               error_handler: DISCARD_VALUE
+          triggers:
+            - uuid: d8ab37caf32f4f609725d67862d7fbd9
+              name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} min'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>={$BATT.BACKUP.MIN}'
+              priority: HIGH
+              description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} min. Estimated backup time is insufficient.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: availability
         - uuid: d9a1951fe4e04d09a1c8ebfc67ed211d
           name: 'Bateria: Estado de carga'
           type: SNMP_AGENT
@@ -498,6 +560,19 @@ zabbix_export:
               value: battery
             - tag: scope
               value: availability
+          triggers:
+            - uuid: 2e144b79806048fcba030135a50eb56b
+              name: 'Bateria em descarga'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)<>3'
+              priority: AVERAGE
+              description: 'hwBattsChargeStatus = disCharge(3). Batteries are supplying load. Check for AC outage.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: availability
         - uuid: 0035b98bc2704208b96bc538bc515481
           name: 'Bateria: Capacidade restante'
           type: SNMP_AGENT
@@ -536,6 +611,22 @@ zabbix_export:
               value: battery
             - tag: scope
               value: performance
+          triggers:
+            - uuid: ce5122a5bc5e4215960a7c9ca547713d
+              name: 'Bateria: SOC abaixo de {$BATT.SOC.MIN}%'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)<{$BATT.SOC.MIN}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)>={$BATT.SOC.MIN}'
+              priority: HIGH
+              description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged.'
+              dependencies:
+                - name: 'Bateria em descarga'
+                  expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: availability
         # -- AC Group Scalars --
         - uuid: 23cbf9219682402799c7023ecf9f68b7
           name: 'CA: Corrente total de entrada'
@@ -604,6 +695,31 @@ zabbix_export:
                 - '0'
                 - '100'
               error_handler: DISCARD_VALUE
+          triggers:
+            - uuid: 2298f99cfb694760b82da861492dc0a2
+              name: 'CC: Tensão do barramento abaixo de {$VDC.MIN} V'
+              expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<{$VDC.MIN}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>={$VDC.MIN}'
+              priority: HIGH
+              description: 'hwDcsTotalVoltage persistently below {$VDC.MIN} V (last 3 samples). Risk of LVD disconnection.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
+            - uuid: e46bd0631fa24626b3b88e407cb49394
+              name: 'CC: Tensão do barramento acima de {$VDC.MAX} V'
+              expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>{$VDC.MAX}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<={$VDC.MAX}'
+              priority: WARNING
+              description: 'hwDcsTotalVoltage persistently above {$VDC.MAX} V (last 3 samples). Risk of overvoltage damage.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
         - uuid: 6d19306cca784dbbbeba946c5a8bf926
           name: 'CC: Corrente total'
           type: SNMP_AGENT
@@ -661,119 +777,7 @@ zabbix_export:
               value: dc
             - tag: scope
               value: performance
-      # ------------------------------------------------------------------ #
-      # TEMPLATE-LEVEL TRIGGERS                                             #
-      # ------------------------------------------------------------------ #
-      triggers:
-        - uuid: 28a53401b1ab4088a3a7b43bb98fc439
-          name: 'Site em estado de alarme'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=2'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=1'
-          priority: HIGH
-          description: 'hwSiteRunningStatus = alarm(2). One or more active alarms exist on the site.'
-          tags:
-            - tag: component
-              value: system
-            - tag: scope
-              value: availability
-        - uuid: b81376e787344fbb8435ce969b6ff0fc
-          name: 'SNMP sem resposta por {$SNMP.TIMEOUT}'
-          expression: 'nodata(/Huawei ETP4860 Power System SNMP/sys.uptime,{$SNMP.TIMEOUT})=1'
-          priority: HIGH
-          description: 'No SNMP data received within {$SNMP.TIMEOUT}. Device may be unreachable or SNMP misconfigured.'
-          tags:
-            - tag: component
-              value: system
-            - tag: scope
-              value: availability
-        - uuid: a313154cbc5943129b5b47f6d1221352
-          name: 'Dispositivo reinicializado (uptime < 10 min)'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)<600'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)>=600'
-          priority: INFO
-          description: 'sysUpTime < 600 s. The device was recently rebooted.'
-          tags:
-            - tag: component
-              value: system
-            - tag: scope
-              value: availability
-        - uuid: 6ce257a7482342c882f60674f712d747
-          name: 'Módulo monitor com falha'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)<>1'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)=1'
-          priority: HIGH
-          description: 'hwMonitorOperStatus != normal(1). The iSitePower controller is reporting a fault.'
-          tags:
-            - tag: component
-              value: monitor
-            - tag: scope
-              value: availability
-        - uuid: 2e144b79806048fcba030135a50eb56b
-          name: 'Bateria em descarga'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)<>3'
-          priority: AVERAGE
-          description: 'hwBattsChargeStatus = disCharge(3). Batteries are supplying load. Check for AC outage.'
-          tags:
-            - tag: component
-              value: battery
-            - tag: scope
-              value: availability
-        - uuid: ce5122a5bc5e4215960a7c9ca547713d
-          name: 'Bateria: SOC abaixo de {$BATT.SOC.MIN}%'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)<{$BATT.SOC.MIN}'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)>={$BATT.SOC.MIN}'
-          priority: HIGH
-          description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged.'
-          dependencies:
-            - name: 'Bateria em descarga'
-              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
-          tags:
-            - tag: component
-              value: battery
-            - tag: scope
-              value: availability
-        - uuid: d8ab37caf32f4f609725d67862d7fbd9
-          name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} min'
-          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>={$BATT.BACKUP.MIN}'
-          priority: HIGH
-          description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} min. Estimated backup time is insufficient.'
-          tags:
-            - tag: component
-              value: battery
-            - tag: scope
-              value: availability
-        - uuid: 2298f99cfb694760b82da861492dc0a2
-          name: 'CC: Tensão do barramento abaixo de {$VDC.MIN} V'
-          expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<{$VDC.MIN}'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>={$VDC.MIN}'
-          priority: HIGH
-          description: 'hwDcsTotalVoltage persistently below {$VDC.MIN} V (last 3 samples). Risk of LVD disconnection.'
-          tags:
-            - tag: component
-              value: dc
-            - tag: scope
-              value: availability
-        - uuid: e46bd0631fa24626b3b88e407cb49394
-          name: 'CC: Tensão do barramento acima de {$VDC.MAX} V'
-          expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>{$VDC.MAX}'
-          recovery_mode: RECOVERY_EXPRESSION
-          recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<={$VDC.MAX}'
-          priority: WARNING
-          description: 'hwDcsTotalVoltage persistently above {$VDC.MAX} V (last 3 samples). Risk of overvoltage damage.'
-          tags:
-            - tag: component
-              value: dc
-            - tag: scope
-              value: availability
+
       # ------------------------------------------------------------------ #
       # LOW-LEVEL DISCOVERY RULES                                           #
       # ------------------------------------------------------------------ #
