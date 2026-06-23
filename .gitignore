@@ -1,0 +1,25 @@
+# Sensitive files — never commit credentials or real walk data
+*.secret
+*.local
+*.key
+*.pem
+*.env
+
+# Real SNMP walk files (may contain IPs, serials, site-IDs)
+# Commit only anonymized examples under examples/
+snmpwalk_*.txt
+!examples/snmpwalk_etp4860.txt
+
+# Zabbix export backups
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

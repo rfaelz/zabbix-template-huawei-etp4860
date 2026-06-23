@@ -1,0 +1,1773 @@
+---
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 7df96bfa3d1f4b1b8b7c1f5a8b6d4321
+      name: Templates/Power
+  templates:
+    - uuid: a1b2c3d4e5f67890a1b2c3d4e5f67890
+      template: Huawei ETP4860 Power System SNMP
+      name: Huawei ETP4860 Power System SNMP
+      description: |-
+        Zabbix 7.0 SNMPv3 monitoring template for the Huawei ETP4860-B1A2 DC power system.
+        Controller MIB: hwSiteMonitorMIB (OID root 1.3.6.1.4.1.2011.6.164).
+        Tested firmware: iSitePower V100R022C00SPC121.
+
+        All OIDs are numeric — no MIB files required on the Zabbix server.
+        Uses Low-Level Discovery for rectifier modules, battery strings,
+        AC/DC distribution units, LVD branches, environment sensors and digital inputs.
+
+        Source MIBs: EMAP-MIB (emap_snmp.mib) + HUAWEI-MIB.
+        Repository: https://github.com/rafaelbastos/zabbix-template-huawei-etp4860
+      groups:
+        - name: Templates/Power
+      macros:
+        - macro: '{$SNMP_USERNAME}'
+          value: ''
+          type: TEXT
+          description: 'SNMPv3 security name (username). Set on the host SNMP interface.'
+        - macro: '{$SNMP_AUTH_PASSPHRASE}'
+          value: ''
+          type: SECRET_TEXT
+          description: 'SNMPv3 auth passphrase (SHA-512). Set on the host SNMP interface.'
+        - macro: '{$SNMP_PRIV_PASSPHRASE}'
+          value: ''
+          type: SECRET_TEXT
+          description: 'SNMPv3 priv passphrase (AES-256). Set on the host SNMP interface.'
+        - macro: '{$SNMP_CONTEXT_NAME}'
+          value: ''
+          type: TEXT
+          description: 'SNMPv3 context name. Leave empty if unused.'
+        - macro: '{$SNMP.TIMEOUT}'
+          value: '5m'
+          type: TEXT
+          description: 'Duration without SNMP data before declaring the device unreachable.'
+        - macro: '{$VDC.MIN}'
+          value: '47'
+          type: TEXT
+          description: 'DC bus lower voltage alarm threshold (V). Default 47 V.'
+        - macro: '{$VDC.MAX}'
+          value: '58'
+          type: TEXT
+          description: 'DC bus upper voltage alarm threshold (V). Default 58 V.'
+        - macro: '{$RECT.TEMP.MAX}'
+          value: '60'
+          type: TEXT
+          description: 'Rectifier module max temperature alarm threshold (°C). Default 60 °C.'
+        - macro: '{$BATT.SOC.MIN}'
+          value: '30'
+          type: TEXT
+          description: 'Battery group minimum State-of-Charge alarm threshold (%). Default 30 %.'
+        - macro: '{$BATT.BACKUP.MIN}'
+          value: '30'
+          type: TEXT
+          description: 'Battery group minimum estimated backup time alarm threshold (min). Default 30 min.'
+        - macro: '{$BATT.TEMP.MAX}'
+          value: '40'
+          type: TEXT
+          description: 'Battery string maximum temperature alarm threshold (°C). Default 40 °C.'
+        - macro: '{$AC.VOLT.MIN}'
+          value: '195'
+          type: TEXT
+          description: 'AC per-phase minimum voltage alarm threshold (V). Default 195 V.'
+        - macro: '{$AC.VOLT.MAX}'
+          value: '265'
+          type: TEXT
+          description: 'AC per-phase maximum voltage alarm threshold (V). Default 265 V.'
+        - macro: '{$ENV.TEMP.MAX}'
+          value: '45'
+          type: TEXT
+          description: 'Environment temperature sensor max alarm threshold (°C). Default 45 °C.'
+        - macro: '{$ENV.TEMP.MIN}'
+          value: '5'
+          type: TEXT
+          description: 'Environment temperature sensor min alarm threshold (°C). Default 5 °C.'
+        - macro: '{$LLD.INTERVAL}'
+          value: '1h'
+          type: TEXT
+          description: 'Low-Level Discovery polling interval.'
+      tags:
+        - tag: class
+          value: power
+        - tag: target
+          value: huawei-etp4860
+      value_maps:
+        - uuid: vm000000000000000000000000000001
+          name: 'Huawei ETP4860: hwSiteRunningStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Alarme
+        - uuid: vm000000000000000000000000000002
+          name: 'Huawei ETP4860: hwMonitorOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Falha RS485
+            - value: '3'
+              newvalue: Falha Rede
+            - value: '4'
+              newvalue: Falha
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000003
+          name: 'Huawei ETP4860: hwRectOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Falha
+            - value: '3'
+              newvalue: Proteção
+            - value: '4'
+              newvalue: Falha Comunicação
+            - value: '5'
+              newvalue: Desligado
+            - value: '6'
+              newvalue: Inválido
+            - value: '7'
+              newvalue: Não Configurado
+            - value: '8'
+              newvalue: CA Ausente
+            - value: '9'
+              newvalue: Módulo Perdido
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000004
+          name: 'Huawei ETP4860: hwBattsChargeStatus'
+          mappings:
+            - value: '1'
+              newvalue: Flutuação
+            - value: '2'
+              newvalue: Equalização
+            - value: '3'
+              newvalue: Descarga
+            - value: '4'
+              newvalue: Hibernando
+            - value: '7'
+              newvalue: Offline
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000005
+          name: 'Huawei ETP4860: hwBattStringOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Temperatura Alta
+            - value: '3'
+              newvalue: Temperatura Baixa
+            - value: '4'
+              newvalue: Circuito Aberto
+            - value: '5'
+              newvalue: Sobrecorrente
+            - value: '6'
+              newvalue: Desbalanço
+            - value: '7'
+              newvalue: Descarga
+            - value: '8'
+              newvalue: Fusível Rompido
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000006
+          name: 'Huawei ETP4860: hwAcInputOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: CA Desligada
+            - value: '3'
+              newvalue: Fase Ausente
+            - value: '4'
+              newvalue: Tensão Alta
+            - value: '5'
+              newvalue: Tensão Baixa
+            - value: '6'
+              newvalue: Frequência Alta
+            - value: '7'
+              newvalue: Frequência Baixa
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000007
+          name: 'Huawei ETP4860: hwDcOutputOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Tensão Alta
+            - value: '3'
+              newvalue: Tensão Baixa
+            - value: '4'
+              newvalue: CC Ausente
+            - value: '5'
+              newvalue: Sobrecarga
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+        - uuid: vm000000000000000000000000000008
+          name: 'Huawei ETP4860: hwLvdBranchOperStatus'
+          mappings:
+            - value: '1'
+              newvalue: Normal
+            - value: '2'
+              newvalue: Desconectado (Tensão Baixa)
+            - value: '3'
+              newvalue: Desconectado (Remoto)
+            - value: '4'
+              newvalue: Desconectado (Manual Local)
+            - value: '5'
+              newvalue: Desconectado (Temp Baixa)
+            - value: '6'
+              newvalue: Desconectado (Temp Alta)
+            - value: '7'
+              newvalue: Desconectado (Tempo)
+            - value: '8'
+              newvalue: Desconectado (Capacidade)
+            - value: '9'
+              newvalue: Desconectado (Forçado)
+            - value: '254'
+              newvalue: Alarme Restaurado
+            - value: '255'
+              newvalue: Desconhecido
+      # ------------------------------------------------------------------ #
+      # SCALAR ITEMS                                                        #
+      # ------------------------------------------------------------------ #
+      items:
+        # -- System / Availability --
+        - uuid: it000000000000000000000000000001
+          name: 'Tempo de funcionamento do sistema'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.2.1.1.3.0'
+          key: sys.uptime
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: uptime
+          description: 'sysUpTime (MIB-2). Converted to seconds (TimeTicks ÷ 100).'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+        - uuid: it000000000000000000000000000002
+          name: 'Status do site'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.1.10.0'
+          key: site.running.status
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          description: 'hwSiteRunningStatus. Overall alarm state of the site.'
+          valuemap:
+            name: 'Huawei ETP4860: hwSiteRunningStatus'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+        - uuid: it000000000000000000000000000003
+          name: 'Nome do site'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.1.2.0'
+          key: site.name
+          delay: '3600s'
+          history: '7d'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: inventory
+        - uuid: it000000000000000000000000000004
+          name: 'Quantidade de alarmes ativos'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.1.2.3.0'
+          key: site.alarm.count
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          description: 'hwAlarmQuantity. Number of active alarms on the site.'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+        - uuid: it000000000000000000000000000005
+          name: 'Status do módulo monitor'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.2.2.1.1.99.1'
+          key: mon.oper.status
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          description: 'hwMonitorOperStatus (index 1). State of the site controller/monitor module.'
+          valuemap:
+            name: 'Huawei ETP4860: hwMonitorOperStatus'
+          tags:
+            - tag: component
+              value: monitor
+            - tag: scope
+              value: availability
+        - uuid: it000000000000000000000000000006
+          name: 'Versão do firmware do monitor'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.2.2.1.1.5.1'
+          key: mon.sw.version
+          delay: '3600s'
+          history: '7d'
+          trends: '0'
+          value_type: CHAR
+          description: 'hwMonEquipSoftwareVersion (index 1).'
+          tags:
+            - tag: component
+              value: monitor
+            - tag: scope
+              value: inventory
+        # -- Rectifier Group Scalars --
+        - uuid: it000000000000000000000000000007
+          name: 'Retificadores: Corrente total CC'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.3.0'
+          key: rect.group.current
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: A
+          description: 'hwRectsTotalCurrent. Total DC output current of all rectifier modules. Raw ÷ 10 = A.'
+          tags:
+            - tag: component
+              value: rectifier
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: IN_RANGE
+              parameters:
+                - '0'
+                - '20000'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000008
+          name: 'Retificadores: Quantidade total'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.4.0'
+          key: rect.group.quantity
+          delay: '3600s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          units: pcs
+          description: 'hwRectsTotalQuantity.'
+          tags:
+            - tag: component
+              value: rectifier
+            - tag: scope
+              value: inventory
+        - uuid: it000000000000000000000000000009
+          name: 'Retificadores: Potência CC total'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.9.0'
+          key: rect.group.dc.power
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: W
+          description: 'hwRectsTotalDCPower. Raw value is integer (W), no scaling.'
+          tags:
+            - tag: component
+              value: rectifier
+            - tag: scope
+              value: performance
+        - uuid: it000000000000000000000000000010
+          name: 'Retificadores: Uso de carga'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.10.0'
+          key: rect.group.load.usage
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: '%'
+          description: 'hwRectsLoadUsage. Load as percentage of total rated rectifier capacity.'
+          tags:
+            - tag: component
+              value: rectifier
+            - tag: scope
+              value: performance
+        - uuid: it000000000000000000000000000011
+          name: 'Retificadores: Potência CA total de entrada'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.11.0'
+          key: rect.group.ac.power
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: W
+          description: 'hwRectsTotalACInputPower. Total AC input power of all rectifier modules.'
+          tags:
+            - tag: component
+              value: rectifier
+            - tag: scope
+              value: performance
+        # -- Battery Group Scalars --
+        - uuid: it000000000000000000000000000012
+          name: 'Bateria: Corrente total do banco'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.1.0'
+          key: batt.group.current
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: A
+          description: 'hwBattsTotalCurrent. Positive = charging, negative = discharging. Raw ÷ 10 = A.'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: IN_RANGE
+              parameters:
+                - '-40000'
+                - '40000'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000013
+          name: 'Bateria: Tempo estimado de backup'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.2.0'
+          key: batt.backup.time
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          units: min
+          description: 'hwBattsPreDischargeTime. Estimated battery backup time (minutes).'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: IN_RANGE
+              parameters:
+                - '0'
+                - '15360'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000014
+          name: 'Bateria: Estado de carga'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.3.0'
+          key: batt.charge.status
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          description: 'hwBattsChargeStatus. Charge/discharge state of the battery group. hibernating(4) is operationally normal.'
+          valuemap:
+            name: 'Huawei ETP4860: hwBattsChargeStatus'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: availability
+        - uuid: it000000000000000000000000000015
+          name: 'Bateria: Capacidade restante'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.9.0'
+          key: batt.remain.capacity
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: Ah
+          description: 'hwBattsRemainCapacity. Remaining capacity of all battery strings.'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: IN_RANGE
+              parameters:
+                - '0'
+                - '2000000'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000016
+          name: 'Bateria: SOC total (%)'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.2.10.0'
+          key: batt.remain.pct
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: '%'
+          description: 'hwTotalRemainingCapacityPercent. Overall battery State-of-Charge (%).'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: performance
+        # -- AC Group Scalars --
+        - uuid: it000000000000000000000000000017
+          name: 'CA: Corrente total de entrada'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.1.3.0'
+          key: acs.total.current
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: A
+          description: 'hwAcsTotalCurrent. Total AC current of the AC group. Raw ÷ 10 = A.'
+          tags:
+            - tag: component
+              value: ac
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: IN_RANGE
+              parameters:
+                - '0'
+                - '1000'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000018
+          name: 'CA: Quantidade de entradas'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.1.4.0'
+          key: acs.input.quantity
+          delay: '3600s'
+          history: '7d'
+          trends: '365d'
+          value_type: UNSIGNED
+          units: pcs
+          description: 'hwAcsInputQuantity.'
+          tags:
+            - tag: component
+              value: ac
+            - tag: scope
+              value: inventory
+        # -- DC Group Scalars --
+        - uuid: it000000000000000000000000000019
+          name: 'CC: Tensão do barramento'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.3.0'
+          key: dcs.total.voltage
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: V
+          description: 'hwDcsTotalVoltage. DC bus voltage. Raw ÷ 10 = V. Used as SNMP availability anchor.'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: IN_RANGE
+              parameters:
+                - '0'
+                - '100'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000020
+          name: 'CC: Corrente total'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.4.0'
+          key: dcs.total.current
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: A
+          description: 'hwDcsTotalCurrent. Total DC load current. Raw ÷ 10 = A.'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: performance
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: IN_RANGE
+              parameters:
+                - '-30000'
+                - '30000'
+              error_handler: DISCARD_VALUE
+        - uuid: it000000000000000000000000000021
+          name: 'CC: Potência total'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.5.0'
+          key: dcs.total.power
+          delay: '60s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: W
+          description: 'hwDcsTotalPower. Total DC load power (integer W, no scaling).'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: performance
+        - uuid: it000000000000000000000000000022
+          name: 'CC: Consumo de energia acumulado'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.1.9.0'
+          key: dcs.perf.consume
+          delay: '3600s'
+          history: '7d'
+          trends: '365d'
+          value_type: FLOAT
+          units: kWh
+          description: 'hwDcsPerfoLoadConsume. Accumulated DC energy consumption (kWh, integer).'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: performance
+      # ------------------------------------------------------------------ #
+      # TEMPLATE-LEVEL TRIGGERS                                             #
+      # ------------------------------------------------------------------ #
+      triggers:
+        - uuid: tr000000000000000000000000000001
+          name: 'Site em estado de alarme'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=2'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/site.running.status)=1'
+          priority: HIGH
+          description: 'hwSiteRunningStatus = alarm(2). One or more active alarms exist on the site.'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000002
+          name: 'SNMP sem resposta por {$SNMP.TIMEOUT}'
+          expression: 'nodata(/Huawei ETP4860 Power System SNMP/sys.uptime,{$SNMP.TIMEOUT})=1'
+          priority: HIGH
+          description: 'No SNMP data received within {$SNMP.TIMEOUT}. Device may be unreachable or SNMP misconfigured.'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000003
+          name: 'Dispositivo reinicializado (uptime < 10 min)'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)<600'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/sys.uptime)>=600'
+          priority: INFO
+          description: 'sysUpTime < 600 s. The device was recently rebooted.'
+          tags:
+            - tag: component
+              value: system
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000004
+          name: 'Módulo monitor com falha'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)<>1'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/mon.oper.status)=1'
+          priority: HIGH
+          description: 'hwMonitorOperStatus != normal(1). The iSitePower controller is reporting a fault.'
+          tags:
+            - tag: component
+              value: monitor
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000005
+          name: 'Bateria em descarga'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)<>3'
+          priority: AVERAGE
+          description: 'hwBattsChargeStatus = disCharge(3). Batteries are supplying load. Check for AC outage.'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000006
+          name: 'Bateria: SOC abaixo de {$BATT.SOC.MIN}%'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)<{$BATT.SOC.MIN}'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.remain.pct)>={$BATT.SOC.MIN}'
+          priority: HIGH
+          description: 'hwTotalRemainingCapacityPercent < {$BATT.SOC.MIN}%. Battery bank is critically discharged.'
+          dependencies:
+            - name: 'Bateria em descarga'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000007
+          name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} min'
+          expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>={$BATT.BACKUP.MIN}'
+          priority: HIGH
+          description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} min. Estimated backup time is insufficient.'
+          tags:
+            - tag: component
+              value: battery
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000008
+          name: 'CC: Tensão do barramento abaixo de {$VDC.MIN} V'
+          expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<{$VDC.MIN}'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'max(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>={$VDC.MIN}'
+          priority: HIGH
+          description: 'hwDcsTotalVoltage persistently below {$VDC.MIN} V (last 3 samples). Risk of LVD disconnection.'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: availability
+        - uuid: tr000000000000000000000000000009
+          name: 'CC: Tensão do barramento acima de {$VDC.MAX} V'
+          expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)>{$VDC.MAX}'
+          recovery_mode: RECOVERY_EXPRESSION
+          recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/dcs.total.voltage,#3)<={$VDC.MAX}'
+          priority: WARNING
+          description: 'hwDcsTotalVoltage persistently above {$VDC.MAX} V (last 3 samples). Risk of overvoltage damage.'
+          tags:
+            - tag: component
+              value: dc
+            - tag: scope
+              value: availability
+      # ------------------------------------------------------------------ #
+      # LOW-LEVEL DISCOVERY RULES                                           #
+      # ------------------------------------------------------------------ #
+      discovery_rules:
+        # ---- 1. Rectifier Modules ----
+        - uuid: dr000000000000000000000000000001
+          name: 'Descoberta de Módulos Retificadores'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.3.2.1.1.1,{#RECTNAME},1.3.6.1.4.1.2011.6.164.1.3.2.1.1.3]'
+          key: rect.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers rectifier modules via hwRectConfigTable (indices 28672–30719).'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000001
+              name: 'Retificador {#RECTNAME}: Nome'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.1.1.3.{#SNMPINDEX}'
+              key: 'rect.name[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '0'
+              value_type: CHAR
+              description: 'hwRectEquipName.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: inventory
+            - uuid: ip000000000000000000000000000002
+              name: 'Retificador {#RECTNAME}: Status operacional'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.99.{#SNMPINDEX}'
+              key: 'rect.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'hwRectOperStatus.'
+              valuemap:
+                name: 'Huawei ETP4860: hwRectOperStatus'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: availability
+            - uuid: ip000000000000000000000000000003
+              name: 'Retificador {#RECTNAME}: Corrente de saída CC'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.2.{#SNMPINDEX}'
+              key: 'rect.output.current[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwRectOutputCurrent. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '300'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000004
+              name: 'Retificador {#RECTNAME}: Tensão de saída CC'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.3.{#SNMPINDEX}'
+              key: 'rect.output.voltage[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwRectOutputVoltage. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '65'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000005
+              name: 'Retificador {#RECTNAME}: Potência CC de saída'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.5.{#SNMPINDEX}'
+              key: 'rect.dc.power[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: W
+              description: 'hwRectDCOutputPower. Integer W, no scaling.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '30000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000006
+              name: 'Retificador {#RECTNAME}: Tensão CA de entrada'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.6.{#SNMPINDEX}'
+              key: 'rect.ac.voltage[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwRectACVoltage. AC input voltage per rectifier. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '600'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000007
+              name: 'Retificador {#RECTNAME}: Eficiência'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.7.{#SNMPINDEX}'
+              key: 'rect.efficiency[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: '%'
+              description: 'hwRectRatedEfficiency. Integer %, no scaling. Range 0–100.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+            - uuid: ip000000000000000000000000000008
+              name: 'Retificador {#RECTNAME}: Temperatura'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.2.2.1.8.{#SNMPINDEX}'
+              key: 'rect.temperature[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: °C
+              description: 'hwRectifierTemperature. Raw ÷ 10 = °C. 2147483647 = invalid (discarded).'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '-50'
+                    - '150'
+                  error_handler: DISCARD_VALUE
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000001
+              name: 'Retificador {#RECTNAME}: Falha crítica (fault/commFail/rectLost)'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=2
+                or last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=4
+                or last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=9
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=1'
+              priority: DISASTER
+              description: 'hwRectOperStatus is fault(2), commFail(4), or rectLost(9).'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000002
+              name: 'Retificador {#RECTNAME}: CA ausente (acOff)'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=8'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=1'
+              priority: HIGH
+              description: 'hwRectOperStatus = acOff(8). AC input to this rectifier module is lost.'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000003
+              name: 'Retificador {#RECTNAME}: Em proteção ou desligado'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=3
+                or last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=5
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=1'
+              priority: WARNING
+              description: 'hwRectOperStatus = protect(3) or switchOff(5).'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000004
+              name: 'Retificador {#RECTNAME}: Temperatura alta (>{$RECT.TEMP.MAX}°C)'
+              expression: 'min(/Huawei ETP4860 Power System SNMP/rect.temperature[{#SNMPINDEX}],#3)>{$RECT.TEMP.MAX}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/rect.temperature[{#SNMPINDEX}],#3)<={$RECT.TEMP.MAX}'
+              priority: WARNING
+              description: 'hwRectifierTemperature persistently above {$RECT.TEMP.MAX}°C (last 3 samples).'
+              tags:
+                - tag: component
+                  value: rectifier
+                - tag: scope
+                  value: performance
+        # ---- 2. Battery Strings ----
+        - uuid: dr000000000000000000000000000002
+          name: 'Descoberta de Strings de Bateria'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.4.4.1.1.1,{#BATTNAME},1.3.6.1.4.1.2011.6.164.1.4.4.1.1.3]'
+          key: batt.string.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers battery strings via hwBattStringConfigTable. Note: indices are not necessarily sequential (e.g., index 5 for the first string).'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000009
+              name: 'String Bateria {#BATTNAME}: Nome'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.1.1.3.{#SNMPINDEX}'
+              key: 'batt.string.name[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: inventory
+            - uuid: ip000000000000000000000000000010
+              name: 'String Bateria {#BATTNAME}: Status operacional'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.99.{#SNMPINDEX}'
+              key: 'batt.string.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'hwBattStringOperStatus.'
+              valuemap:
+                name: 'Huawei ETP4860: hwBattStringOperStatus'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: availability
+            - uuid: ip000000000000000000000000000011
+              name: 'String Bateria {#BATTNAME}: Corrente'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.2.{#SNMPINDEX}'
+              key: 'batt.string.current[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwBattStringCurrent. Positive = charging, negative = discharging. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '-1000'
+                    - '1000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000012
+              name: 'String Bateria {#BATTNAME}: SOC (%)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.3.{#SNMPINDEX}'
+              key: 'batt.string.soc[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: '%'
+              description: 'hwBattStringRemainCapacityPercent. Raw ÷ 10 = %.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '100'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000013
+              name: 'String Bateria {#BATTNAME}: Capacidade restante'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.4.{#SNMPINDEX}'
+              key: 'batt.string.remain.cap[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: Ah
+              description: 'hwBattStringRemainCapacity. Integer Ah, no scaling.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '10000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000014
+              name: 'String Bateria {#BATTNAME}: Temperatura'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.6.{#SNMPINDEX}'
+              key: 'batt.string.temperature[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: °C
+              description: 'hwBattStringTemprature. Raw ÷ 10 = °C. 2147483647 = sensor not configured (discarded).'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '-50'
+                    - '100'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000015
+              name: 'String Bateria {#BATTNAME}: Tensão midpoint'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.4.4.2.1.7.{#SNMPINDEX}'
+              key: 'batt.string.midpoint.voltage[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwBattStringMidpointVoltage. Midpoint voltage for string balance monitoring. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '-90'
+                    - '90'
+                  error_handler: DISCARD_VALUE
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000005
+              name: 'String Bateria {#BATTNAME}: Falha crítica'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=4
+                or last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=5
+                or last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=8
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=1'
+              priority: HIGH
+              description: 'hwBattStringOperStatus is loopBreak(4), overCurrent(5), or fuseBreak(8).'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000006
+              name: 'String Bateria {#BATTNAME}: Temperatura anormal'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=2
+                or last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=3
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.string.oper.status[{#SNMPINDEX}])=1'
+              priority: HIGH
+              description: 'hwBattStringOperStatus = tempHigh(2) or tempLow(3).'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+            - uuid: tp000000000000000000000000000007
+              name: 'String Bateria {#BATTNAME}: Temperatura alta (>{$BATT.TEMP.MAX}°C)'
+              expression: 'min(/Huawei ETP4860 Power System SNMP/batt.string.temperature[{#SNMPINDEX}],#3)>{$BATT.TEMP.MAX}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/batt.string.temperature[{#SNMPINDEX}],#3)<={$BATT.TEMP.MAX}'
+              priority: WARNING
+              description: 'Battery string temperature persistently above {$BATT.TEMP.MAX}°C (last 3 samples).'
+              tags:
+                - tag: component
+                  value: battery
+                - tag: scope
+                  value: performance
+        # ---- 3. AC Inputs ----
+        - uuid: dr000000000000000000000000000003
+          name: 'Descoberta de Entradas CA'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.5.2.1.1.1,{#ACNAME},1.3.6.1.4.1.2011.6.164.1.5.2.1.1.3]'
+          key: ac.input.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers AC distribution units via hwAcInputTable.'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000016
+              name: 'CA {#ACNAME}: Status operacional'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.99.{#SNMPINDEX}'
+              key: 'ac.input.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'hwAcInputOperStatus.'
+              valuemap:
+                name: 'Huawei ETP4860: hwAcInputOperStatus'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: availability
+            - uuid: ip000000000000000000000000000017
+              name: 'CA {#ACNAME}: Tensão Fase A'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.4.{#SNMPINDEX}'
+              key: 'ac.volt.a[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwApOrAblVoltage. Phase A or AB-line voltage. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '600'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000018
+              name: 'CA {#ACNAME}: Tensão Fase B'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.5.{#SNMPINDEX}'
+              key: 'ac.volt.b[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwBpOrBclVoltage. Phase B or BC-line voltage. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '600'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000019
+              name: 'CA {#ACNAME}: Tensão Fase C'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.6.{#SNMPINDEX}'
+              key: 'ac.volt.c[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwCpOrCalVoltage. Phase C or CA-line voltage. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '600'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000020
+              name: 'CA {#ACNAME}: Corrente Fase A'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.7.{#SNMPINDEX}'
+              key: 'ac.curr.a[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwAphaseCurrent. Phase A current. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '20000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000021
+              name: 'CA {#ACNAME}: Corrente Fase B'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.8.{#SNMPINDEX}'
+              key: 'ac.curr.b[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwBphaseCurrent. Phase B current. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '20000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000022
+              name: 'CA {#ACNAME}: Corrente Fase C'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.2.1.1.9.{#SNMPINDEX}'
+              key: 'ac.curr.c[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwCphaseCurrent. Phase C current. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '20000'
+                  error_handler: DISCARD_VALUE
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000008
+              name: 'CA {#ACNAME}: Falha de alimentação CA (acOff/Fase ausente)'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/ac.input.oper.status[{#SNMPINDEX}])=2
+                or last(/Huawei ETP4860 Power System SNMP/ac.input.oper.status[{#SNMPINDEX}])=3
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/ac.input.oper.status[{#SNMPINDEX}])=1'
+              priority: DISASTER
+              description: 'hwAcInputOperStatus = acOff(2) or acAbsent(3). AC utility power failure.'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000009
+              name: 'CA {#ACNAME}: Tensão CA fora da faixa'
+              expression: |
+                min(/Huawei ETP4860 Power System SNMP/ac.volt.a[{#SNMPINDEX}],#3)>{$AC.VOLT.MAX}
+                or max(/Huawei ETP4860 Power System SNMP/ac.volt.a[{#SNMPINDEX}],#3)<{$AC.VOLT.MIN}
+                or min(/Huawei ETP4860 Power System SNMP/ac.volt.b[{#SNMPINDEX}],#3)>{$AC.VOLT.MAX}
+                or max(/Huawei ETP4860 Power System SNMP/ac.volt.b[{#SNMPINDEX}],#3)<{$AC.VOLT.MIN}
+                or min(/Huawei ETP4860 Power System SNMP/ac.volt.c[{#SNMPINDEX}],#3)>{$AC.VOLT.MAX}
+                or max(/Huawei ETP4860 Power System SNMP/ac.volt.c[{#SNMPINDEX}],#3)<{$AC.VOLT.MIN}
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: |
+                min(/Huawei ETP4860 Power System SNMP/ac.volt.a[{#SNMPINDEX}],#3)<={$AC.VOLT.MAX}
+                and max(/Huawei ETP4860 Power System SNMP/ac.volt.a[{#SNMPINDEX}],#3)>={$AC.VOLT.MIN}
+                and min(/Huawei ETP4860 Power System SNMP/ac.volt.b[{#SNMPINDEX}],#3)<={$AC.VOLT.MAX}
+                and max(/Huawei ETP4860 Power System SNMP/ac.volt.b[{#SNMPINDEX}],#3)>={$AC.VOLT.MIN}
+                and min(/Huawei ETP4860 Power System SNMP/ac.volt.c[{#SNMPINDEX}],#3)<={$AC.VOLT.MAX}
+                and max(/Huawei ETP4860 Power System SNMP/ac.volt.c[{#SNMPINDEX}],#3)>={$AC.VOLT.MIN}
+              priority: WARNING
+              description: 'Any AC phase voltage persistently outside [{$AC.VOLT.MIN}, {$AC.VOLT.MAX}] V (last 3 samples).'
+              tags:
+                - tag: component
+                  value: ac
+                - tag: scope
+                  value: performance
+        # ---- 4. DC Outputs ----
+        - uuid: dr000000000000000000000000000004
+          name: 'Descoberta de Saídas CC'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.6.2.1.1.1,{#DCNAME},1.3.6.1.4.1.2011.6.164.1.6.2.1.1.3]'
+          key: dc.output.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers DC distribution units via hwDcOutputTable.'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000023
+              name: 'CC {#DCNAME}: Status operacional'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.99.{#SNMPINDEX}'
+              key: 'dc.output.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'hwDcOutputOperStatus.'
+              valuemap:
+                name: 'Huawei ETP4860: hwDcOutputOperStatus'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
+            - uuid: ip000000000000000000000000000024
+              name: 'CC {#DCNAME}: Tensão CC'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.4.{#SNMPINDEX}'
+              key: 'dc.output.voltage[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwDcOutputVoltage. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '0'
+                    - '100'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000025
+              name: 'CC {#DCNAME}: Corrente CC'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.5.{#SNMPINDEX}'
+              key: 'dc.output.current[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: A
+              description: 'hwDcOutputCurrent. Raw ÷ 10 = A.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+                - type: IN_RANGE
+                  parameters:
+                    - '-30000'
+                    - '30000'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000026
+              name: 'CC {#DCNAME}: Potência CC'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.6.{#SNMPINDEX}'
+              key: 'dc.output.power[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: W
+              description: 'hwDcOutputPower. Integer W, no scaling.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: performance
+            - uuid: ip000000000000000000000000000027
+              name: 'CC {#DCNAME}: Uso de carga'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.6.2.1.1.8.{#SNMPINDEX}'
+              key: 'dc.load.usage[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: '%'
+              description: 'hwLoadUsage. Load as percentage of rated rectifier capacity. Integer %, no scaling.'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: performance
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000010
+              name: 'CC {#DCNAME}: Tensão CC baixa (<{$VDC.MIN} V)'
+              expression: 'max(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)<{$VDC.MIN}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'max(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)>={$VDC.MIN}'
+              priority: HIGH
+              description: 'hwDcOutputVoltage persistently below {$VDC.MIN} V (last 3 samples).'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000011
+              name: 'CC {#DCNAME}: Tensão CC alta (>{$VDC.MAX} V)'
+              expression: 'min(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)>{$VDC.MAX}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/dc.output.voltage[{#SNMPINDEX}],#3)<={$VDC.MAX}'
+              priority: WARNING
+              description: 'hwDcOutputVoltage persistently above {$VDC.MAX} V (last 3 samples).'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
+            - uuid: tp000000000000000000000000000012
+              name: 'CC {#DCNAME}: Sobrecarga ou ausência CC'
+              expression: |
+                last(/Huawei ETP4860 Power System SNMP/dc.output.oper.status[{#SNMPINDEX}])=5
+                or last(/Huawei ETP4860 Power System SNMP/dc.output.oper.status[{#SNMPINDEX}])=4
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/dc.output.oper.status[{#SNMPINDEX}])=1'
+              priority: HIGH
+              description: 'hwDcOutputOperStatus = overload(5) or dcAbsent(4).'
+              tags:
+                - tag: component
+                  value: dc
+                - tag: scope
+                  value: availability
+        # ---- 5. LVD Branches ----
+        - uuid: dr000000000000000000000000000005
+          name: 'Descoberta de Ramos LVD'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.7.2.1.1.1,{#LVDNAME},1.3.6.1.4.1.2011.6.164.1.7.2.1.1.3]'
+          key: lvd.branch.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers LVD (Low-Voltage Disconnect) branches via hwLvdBranchTable.'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000028
+              name: 'LVD {#LVDNAME}: Nome'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.3.{#SNMPINDEX}'
+              key: 'lvd.name[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: component
+                  value: lvd
+                - tag: scope
+                  value: inventory
+            - uuid: ip000000000000000000000000000029
+              name: 'LVD {#LVDNAME}: Status operacional'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.99.{#SNMPINDEX}'
+              key: 'lvd.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'hwLvdBranchOperStatus.'
+              valuemap:
+                name: 'Huawei ETP4860: hwLvdBranchOperStatus'
+              tags:
+                - tag: component
+                  value: lvd
+                - tag: scope
+                  value: availability
+            - uuid: ip000000000000000000000000000030
+              name: 'LVD {#LVDNAME}: Tensão de desligamento'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.7.2.1.1.5.{#SNMPINDEX}'
+              key: 'lvd.disc.voltage[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: V
+              description: 'hwSetLvdVoltage. Configured low-voltage disconnect threshold. Raw ÷ 10 = V.'
+              tags:
+                - tag: component
+                  value: lvd
+                - tag: scope
+                  value: inventory
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000013
+              name: 'LVD {#LVDNAME}: Ramo desconectado'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/lvd.oper.status[{#SNMPINDEX}])<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/lvd.oper.status[{#SNMPINDEX}])=1'
+              priority: HIGH
+              description: 'hwLvdBranchOperStatus != normal(1). The LVD branch has disconnected.'
+              tags:
+                - tag: component
+                  value: lvd
+                - tag: scope
+                  value: availability
+        # ---- 6. Environment Temperature Sensors ----
+        - uuid: dr000000000000000000000000000006
+          name: 'Descoberta de Sensores de Temperatura Ambiente'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.8.2.1.1.1,{#TEMPNAME},1.3.6.1.4.1.2011.6.164.1.8.2.1.1.3]'
+          key: env.temp.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers environment temperature sensors via hwEnvTempSensorTable.'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000031
+              name: 'Temperatura Amb. {#TEMPNAME}: Temperatura'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.1.1.4.{#SNMPINDEX}'
+              key: 'env.temperature[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: FLOAT
+              units: °C
+              description: 'hwEnvTemperature. Integer °C, no scaling. 2147483647 = sensor not configured (discarded).'
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: performance
+              preprocessing:
+                - type: IN_RANGE
+                  parameters:
+                    - '-100'
+                    - '100'
+                  error_handler: DISCARD_VALUE
+            - uuid: ip000000000000000000000000000032
+              name: 'Temperatura Amb. {#TEMPNAME}: Nome'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.1.1.3.{#SNMPINDEX}'
+              key: 'env.temp.name[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: inventory
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000014
+              name: 'Temperatura Amb. {#TEMPNAME}: Temperatura alta (>{$ENV.TEMP.MAX}°C)'
+              expression: 'min(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)>{$ENV.TEMP.MAX}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)<={$ENV.TEMP.MAX}'
+              priority: WARNING
+              description: 'Environment temperature persistently above {$ENV.TEMP.MAX}°C (last 3 samples).'
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: performance
+            - uuid: tp000000000000000000000000000015
+              name: 'Temperatura Amb. {#TEMPNAME}: Temperatura baixa (<{$ENV.TEMP.MIN}°C)'
+              expression: 'max(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)<{$ENV.TEMP.MIN}'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'max(/Huawei ETP4860 Power System SNMP/env.temperature[{#SNMPINDEX}],#3)>={$ENV.TEMP.MIN}'
+              priority: WARNING
+              description: 'Environment temperature persistently below {$ENV.TEMP.MIN}°C (last 3 samples).'
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: performance
+        # ---- 7. Digital Inputs (Spare Digitals) ----
+        - uuid: dr000000000000000000000000000007
+          name: 'Descoberta de Entradas Digitais'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPINDEX},1.3.6.1.4.1.2011.6.164.1.8.2.3.1.1,{#DINAME},1.3.6.1.4.1.2011.6.164.1.8.2.3.1.3]'
+          key: di.discovery
+          delay: '{$LLD.INTERVAL}'
+          description: 'Discovers spare digital inputs (DI) via hwSpareDigitalTable.'
+          item_prototypes:
+            - uuid: ip000000000000000000000000000033
+              name: 'DI {#DINAME}: Nome'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.3.1.3.{#SNMPINDEX}'
+              key: 'di.name[{#SNMPINDEX}]'
+              delay: '3600s'
+              history: '7d'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: inventory
+            - uuid: ip000000000000000000000000000034
+              name: 'DI {#DINAME}: Status'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.6.164.1.8.2.3.1.99.{#SNMPINDEX}'
+              key: 'di.oper.status[{#SNMPINDEX}]'
+              delay: '60s'
+              history: '7d'
+              trends: '365d'
+              value_type: UNSIGNED
+              description: 'Digital input operational status. 1=normal.'
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: availability
+          trigger_prototypes:
+            - uuid: tp000000000000000000000000000016
+              name: 'DI {#DINAME}: Entrada digital ativa (status anormal)'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/di.oper.status[{#SNMPINDEX}])<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/di.oper.status[{#SNMPINDEX}])=1'
+              priority: WARNING
+              description: 'Digital input status != 1 (normal). May indicate a door open, smoke alarm, or custom sensor trigger.'
+              tags:
+                - tag: component
+                  value: environment
+                - tag: scope
+                  value: availability
