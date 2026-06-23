@@ -91,7 +91,7 @@ zabbix_export:
           value: power
         - tag: target
           value: huawei-etp4860
-      value_maps:
+      valuemaps:
         - uuid: c435780679164a3d94bb6a11e20b0e40
           name: 'Huawei ETP4860: hwSiteRunningStatus'
           mappings:
