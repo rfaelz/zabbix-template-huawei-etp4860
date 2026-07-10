@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.2.0] - 2026-07-10
+
+### Changed
+- **LLD macros**: all 7 discovery rules now use device-assigned name macros (`{#RECTNAME}`,
+  `{#BATTNAME}`, `{#ACNAME}`, `{#DCNAME}`, `{#LVDNAME}`, `{#TEMPNAME}`, `{#DINAME}`) instead
+  of the generic `{#IDX}`. The OID column used for discovery changed from `.1` (index) to `.3`
+  (name). `{#SNMPINDEX}` is preserved in all `snmp_oid`, `key`, and expression fields.
+- **English names**: all item names, item prototype names, trigger names, trigger prototype names,
+  discovery rule names and value map entries translated from Portuguese to English. Descriptions
+  were already in English and remain unchanged.
+- **Template internal description**: updated to reflect SNMP v1/v2c/v3 compatibility, LLD name
+  macros, sentinel handling, and Claude Code attribution.
+- **README**: rewritten — removed host-configuration, import-instructions, troubleshooting and
+  screenshots sections; updated About section, macro table, trigger overview and dependencies.
+  Added Claude Code credit.
+
 ## [1.1.0] - 2026-07-10
 
 ### Fixed

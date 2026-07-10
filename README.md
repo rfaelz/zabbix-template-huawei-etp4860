@@ -1,7 +1,7 @@
-# Zabbix Template — Huawei ETP4860-B1A2 Power System (SNMPv3)
+# Zabbix Template — Huawei ETP4860-B1A2 Power System
 
 Production-quality Zabbix 7.0 LTS template for the **Huawei ETP4860-B1A2** DC power system /
-rectifier, using SNMPv3 and full Low-Level Discovery.
+rectifier, using SNMP and full Low-Level Discovery.
 
 | | |
 |---|---|
@@ -9,8 +9,21 @@ rectifier, using SNMPv3 and full Low-Level Discovery.
 | **Controller** | iSitePower (hwSiteMonitorMIB) |
 | **Tested firmware** | iSitePower V100R022C00SPC121 |
 | **Zabbix version** | 7.0 LTS (import format 7.0) |
-| **SNMP version** | SNMPv3 authPriv (SHA-512 / AES-256) |
+| **SNMP** | v1 / v2c / v3 |
 | **OID root** | `1.3.6.1.4.1.2011.6.164` |
+
+---
+
+## About
+
+Monitors the entire iSitePower stack via SNMP:
+
+- **20 scalar items** — system availability, rectifier group totals, battery bank state, AC and DC bus metrics.
+- **7 LLD rules** — auto-discovers every rectifier module, battery string, AC input, DC output, LVD branch, environment temperature sensor and digital input. Each instance is labelled with the **device-assigned name** (e.g. `{#RECTNAME}`, `{#BATTNAME}`), so items and triggers show meaningful names in the Zabbix UI without manual configuration.
+- **Sentinel handling** — the firmware returns `2147483647` (INT32_MAX) on measurement OIDs when rectifiers shut down during an AC outage. All voltage/current/power/load items convert this sentinel to `0` via a JavaScript preprocessing step, keeping graphs continuous.
+- **AC-outage alarm suppression** — the *Rectifier: In protection or off* trigger depends on *Battery discharging*, so individual module alerts are silenced while the entire AC feed is lost.
+- **Backup time in hours** — `hwBattsPreDischargeTime` is reported in hours by the firmware (MIB says minutes); the template uses `h` units accordingly. The backup-time alert only fires while the battery is actually discharging.
+- All OIDs are **numeric** — no MIB files required on the Zabbix server.
 
 ---
 
@@ -20,19 +33,19 @@ rectifier, using SNMPv3 and full Low-Level Discovery.
 
 | Group | Item | Unit |
 |---|---|---|
-| System | Uptime, site alarm status, active alarm count | — |
+| System | Uptime, site alarm status | — |
 | Monitor | Controller status, firmware version | — |
-| Rectifiers | Total DC current, total DC power, AC input power, load usage | A, W, % |
-| Battery | Bank current, SOC %, remaining capacity, backup time, charge status | A, Ah, %, min |
-| AC | Total AC current | A |
+| Rectifiers | Total DC current, DC power, AC input power | A, W |
+| Battery | Bank current, SOC %, remaining capacity, backup time, charge status | A, Ah, %, h |
+| AC bus | Number of inputs | pcs |
 | DC bus | Bus voltage, total current, total power, accumulated energy | V, A, W, kWh |
 
 ### Discovered via LLD
 
 | LLD Rule | Macro | Items per instance |
 |---|---|---|
-| Rectifier modules | `{#RECTNAME}` | Status, Vout, Iout, Pdc, Vac, efficiency, temperature |
-| Battery strings | `{#BATTNAME}` | Status, current, SOC%, remaining capacity, temperature, midpoint voltage |
+| Rectifier modules | `{#RECTNAME}` | Status, DC output V/I/P, AC input V, efficiency, temperature |
+| Battery strings | `{#BATTNAME}` | Status, current, SOC %, remaining capacity, temperature, midpoint voltage |
 | AC inputs | `{#ACNAME}` | Status, Va/Vb/Vc, Ia/Ib/Ic |
 | DC outputs | `{#DCNAME}` | Status, Vdc, Idc, Pdc, load % |
 | LVD branches | `{#LVDNAME}` | Status, disconnect voltage |
@@ -43,68 +56,17 @@ rectifier, using SNMPv3 and full Low-Level Discovery.
 
 ## Template macros
 
-See [docs/macros.md](docs/macros.md) for the full table. Key defaults:
-
 | Macro | Default | Meaning |
 |---|---|---|
 | `{$VDC.MIN}` / `{$VDC.MAX}` | 47 / 58 V | DC bus voltage range |
 | `{$BATT.SOC.MIN}` | 30 % | Low SOC alarm |
-| `{$BATT.BACKUP.MIN}` | 30 min | Minimum backup time alarm |
+| `{$BATT.BACKUP.MIN}` | 1 h | Minimum backup time alarm |
 | `{$AC.VOLT.MIN}` / `{$AC.VOLT.MAX}` | 195 / 265 V | AC voltage range |
 | `{$RECT.TEMP.MAX}` | 60 °C | Rectifier overheat |
+| `{$BATT.TEMP.MAX}` | 40 °C | Battery string overheat |
+| `{$ENV.TEMP.MAX}` / `{$ENV.TEMP.MIN}` | 45 / 5 °C | Environment sensor range |
 | `{$SNMP.TIMEOUT}` | 5m | SNMP nodata timeout |
-
----
-
-## Import instructions
-
-1. In Zabbix: **Data collection → Templates → Import**
-2. Select `templates/huawei_etp4860_snmp.yaml`
-3. Check **Update existing** and **Delete missing** if re-importing
-4. Click **Import**
-
----
-
-## Host configuration
-
-### 1. Create the host
-
-**Configuration → Hosts → Create host**
-- Hostname: e.g. `ETP4860-Site-A`
-- Groups: add to an appropriate group
-- Templates: link **Huawei ETP4860 Power System SNMP**
-
-### 2. Add the SNMP interface
-
-**Host → Interfaces → Add → SNMP**
-
-| Field | Value |
-|---|---|
-| IP address | `<device IP>` |
-| Port | `161` |
-| SNMP version | `SNMPv3` |
-| Security name | `{$SNMP_USERNAME}` |
-| Security level | `authPriv` |
-| Auth protocol | `SHA512` |
-| Auth passphrase | `{$SNMP_AUTH_PASSPHRASE}` |
-| Priv protocol | `AES256` |
-| Priv passphrase | `{$SNMP_PRIV_PASSPHRASE}` |
-| Context name | `{$SNMP_CONTEXT_NAME}` (leave empty if unused) |
-
-### 3. Set the host-level macros
-
-**Host → Macros → Inherited and host macros**
-
-Override the SNMPv3 credentials (these are secret — they will not appear in the UI after saving):
-
-```
-{$SNMP_USERNAME}        = <your SNMPv3 username>
-{$SNMP_AUTH_PASSPHRASE} = <your auth passphrase>   (type: Secret text)
-{$SNMP_PRIV_PASSPHRASE} = <your priv passphrase>   (type: Secret text)
-```
-
-Override any threshold macros that differ from the defaults (e.g. `{$BATT.SOC.MIN}` for sites
-with partial-capacity battery banks).
+| `{$LLD.INTERVAL}` | 1h | LLD polling interval |
 
 ---
 
@@ -112,68 +74,27 @@ with partial-capacity battery banks).
 
 | Trigger | Severity | Condition |
 |---|---|---|
-| SNMP sem resposta | High | nodata for `{$SNMP.TIMEOUT}` |
-| Site em alarme | High | hwSiteRunningStatus = alarm |
-| Monitor com falha | High | hwMonitorOperStatus ≠ normal |
-| Dispositivo reinicializado | Info | sysUpTime < 10 min |
-| CA: Falha de alimentação | Disaster | hwAcInputOperStatus = acOff or acAbsent |
-| Retificador: Falha crítica | Disaster | hwRectOperStatus = fault/commFail/rectLost |
-| LVD desconectado | High | hwLvdBranchOperStatus ≠ normal |
-| CC: Tensão baixa | High | DC bus < `{$VDC.MIN}` (3 consecutive samples) |
-| Bateria em descarga | Average | hwBattsChargeStatus = disCharge |
-| SOC baixo | High | SOC < `{$BATT.SOC.MIN}` |
-| Tempo de backup insuficiente | High | Backup time < `{$BATT.BACKUP.MIN}` min |
-| Temperatura retificador alta | Warning | Module temp > `{$RECT.TEMP.MAX}` (3 samples) |
-| Temperatura bateria alta | Warning | String temp > `{$BATT.TEMP.MAX}` (3 samples) |
-| Temperatura ambiente | Warning | Env. sensor out of `[{$ENV.TEMP.MIN}, {$ENV.TEMP.MAX}]` |
+| No SNMP response | High | nodata for `{$SNMP.TIMEOUT}` |
+| Site in alarm state | High | hwSiteRunningStatus = alarm |
+| Monitor module fault | High | hwMonitorOperStatus ≠ normal |
+| Device rebooted | Info | sysUpTime < 10 min |
+| AC: Power failure | Disaster | hwAcInputOperStatus = acOff or acAbsent |
+| Rectifier: Critical fault | Disaster | hwRectOperStatus = fault/commFail/rectLost |
+| LVD branch disconnected | High | hwLvdBranchOperStatus ≠ normal |
+| DC bus: Voltage low | High | DC bus < `{$VDC.MIN}` (3 consecutive samples) |
+| Battery discharging | Average | hwBattsChargeStatus = disCharge |
+| Battery: SOC low | High | SOC < `{$BATT.SOC.MIN}` |
+| Battery: Backup time low | High | Backup time ≤ `{$BATT.BACKUP.MIN}` h **and** discharging |
+| Rectifier: High temperature | Warning | Module temp > `{$RECT.TEMP.MAX}` (3 samples) |
+| Battery string: High temperature | Warning | String temp > `{$BATT.TEMP.MAX}` (3 samples) |
+| Environment: Temperature out of range | Warning | Env. sensor outside `[{$ENV.TEMP.MIN}, {$ENV.TEMP.MAX}]` |
 
----
+### Trigger dependencies
 
-## Trigger dependency
-
-The **Battery SOC low** trigger has a Zabbix dependency on **Battery em descarga**,
-so low-SOC alerts are suppressed when the discharge cause is already known.
-
-For AC-outage suppression of battery triggers: add manual dependencies in
-**Configuration → Triggers** after import, linking battery discharge/SOC triggers
-to depend on the specific AC input failure trigger discovered for your site.
-
----
-
-## Troubleshooting
-
-### "cannot parse OID" / symbolic OID errors
-
-This template uses **only numeric OIDs**. If you see this error in the Zabbix log:
-```
-snmp_parse_oid(): cannot parse OID "SNMPv2-SMI::enterprises..."
-```
-it means another template or manual item uses symbolic OIDs.  
-On Debian/Ubuntu, `snmp-mibs-downloader` is disabled by default — symbolic OIDs fail
-without MIB files. This template never uses symbolic OIDs, so it is portable.
-
-### Items stuck in "Not supported"
-
-- Verify the SNMPv3 credentials match the ETP4860 configuration.
-- Check that the Zabbix server can reach the device on UDP/161.
-- Run a manual test: `snmpwalk -v3 -l authPriv -u USER -a SHA-512 -A AUTHPASS -x AES -X PRIVPASS <IP> 1.3.6.1.4.1.2011.6.164.1.3.1`
-
-### Battery string temperature always "no data"
-
-The walk value `2147483647` (0x7FFFFFFF) is the firmware sentinel for "sensor not installed".
-The template discards this value via an `IN_RANGE` preprocessing step, so the item will have
-no data until a physical temperature sensor is installed on the battery string.
-
-### LVD discovery finds no items
-
-The walk for `{$LLD.INTERVAL}` (default 1h) may not have run yet.
-Force a manual discovery: **Host → Discovery → Run now**.
-
----
-
-## Screenshots
-
-*(Add screenshots of dashboards, graphs, and problem views here)*
+- **Rectifier: In protection or off** → depends on **Battery discharging** (suppresses individual
+  module alerts during a site-wide AC outage, when all rectifiers shut down simultaneously).
+- **Battery: Backup time below threshold** → only fires when `batt.charge.status = disCharge(3)`
+  (prevents spurious alerts at rest; uses `<=` operator since firmware reports whole hours).
 
 ---
 
@@ -182,6 +103,7 @@ Force a manual discovery: **Host → Discovery → Run now**.
 - MIB source: Huawei `EMAP-MIB` (`emap_snmp.mib`) + `HUAWEI-MIB`
 - Walk reference: ETP4860-B1A2 with iSitePower V100R022C00SPC121
 - Author: Rafael Bastos
+- Created with [Claude Code](https://claude.ai/code) (Anthropic)
 
 ## License
 
