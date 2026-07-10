@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.1.0] - 2026-07-10
+
+### Fixed
+- **Sentinela 2147483647 (INT32_MAX)**: substituído IN_RANGE/DISCARD_VALUE por step JAVASCRIPT
+  (`return value==2147483647?0:value;`) em 14 itens de tensão/corrente/potência/uso-de-carga.
+  Durante queda de CA, o iSitePower retorna esse sentinela; agora é convertido a 0 em vez de
+  descartar o sample e gerar gap nos gráficos.
+  Itens afetados: `rect.group.current`, `rect.group.dc.power`, `rect.group.ac.power`,
+  `rect.output.current`, `rect.output.voltage`, `rect.dc.power`, `rect.ac.voltage`,
+  `ac.volt.a/b/c`, `ac.curr.a/b/c`, `dc.load.usage`.
+  Mantidos com IN_RANGE (sentinela = inválido real): `rect.temperature`, `batt.string.temperature`.
+- **Trigger backup bateria**: expressão corrigida para `<=` (firmware reporta horas inteiras,
+  `< 1` nunca dispararia) e gateada em `batt.charge.status=3` para só alarmar durante descarga real.
+  Recovery também ajustado (`>` + `<>3`).
+
+### Added
+- **Dependência de trigger**: "Retificador: Em proteção ou desligado" agora depende de
+  "Bateria em descarga" — suprime alarmes individuais de retificador durante queda de CA,
+  quando todos desligam ao mesmo tempo (comportamento normal de proteção).
+
+### Removed
+- Item escalar `acs.total.current` (hwAcsTotalCurrent): sempre retorna 0 neste hardware.
+- Item escalar `rect.group.load.usage` (hwRectsLoadUsage): sempre retorna 0 neste hardware.
+
 ## [1.0.0] - 2026-06-22
 
 ### Added

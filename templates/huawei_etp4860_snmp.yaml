@@ -379,14 +379,12 @@ zabbix_export:
             - tag: scope
               value: performance
           preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - 'return value==2147483647?0:value;'
             - type: MULTIPLIER
               parameters:
                 - '0.1'
-            - type: IN_RANGE
-              parameters:
-                - '0'
-                - '20000'
-              error_handler: DISCARD_VALUE
         - uuid: 16beada243ea4eaea8729648e45aaf97
           name: 'Retificadores: Quantidade total'
           type: SNMP_AGENT
@@ -419,22 +417,10 @@ zabbix_export:
               value: rectifier
             - tag: scope
               value: performance
-        - uuid: 62d9086c11164208b204d5390580fc86
-          name: 'Retificadores: Uso de carga'
-          type: SNMP_AGENT
-          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.3.1.10.0'
-          key: rect.group.load.usage
-          delay: '60s'
-          history: '7d'
-          trends: '365d'
-          value_type: FLOAT
-          units: '%'
-          description: 'hwRectsLoadUsage. Load as percentage of total rated rectifier capacity.'
-          tags:
-            - tag: component
-              value: rectifier
-            - tag: scope
-              value: performance
+          preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - 'return value==2147483647?0:value;'
         - uuid: c216b6a962d24e95b22a7fd261f5be22
           name: 'Retificadores: Potência CA total de entrada'
           type: SNMP_AGENT
@@ -451,6 +437,10 @@ zabbix_export:
               value: rectifier
             - tag: scope
               value: performance
+          preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - 'return value==2147483647?0:value;'
         # -- Battery Group Scalars --
         - uuid: 44c3541e8cad41ceadea9b100a6fcd23
           name: 'Bateria: Corrente total do banco'
@@ -502,9 +492,9 @@ zabbix_export:
           triggers:
             - uuid: d8ab37caf32f4f609725d67862d7fbd9
               name: 'Bateria: Tempo de backup abaixo de {$BATT.BACKUP.MIN} h'
-              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<{$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>0'
+              expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)<={$BATT.BACKUP.MIN} and last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>={$BATT.BACKUP.MIN}'
+              recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/batt.backup.time)>{$BATT.BACKUP.MIN} or last(/Huawei ETP4860 Power System SNMP/batt.charge.status)<>3'
               priority: HIGH
               description: 'hwBattsPreDischargeTime < {$BATT.BACKUP.MIN} h. Estimated backup time is insufficient.'
               tags:
@@ -594,31 +584,6 @@ zabbix_export:
                 - tag: scope
                   value: availability
         # -- AC Group Scalars --
-        - uuid: 23cbf9219682402799c7023ecf9f68b7
-          name: 'CA: Corrente total de entrada'
-          type: SNMP_AGENT
-          snmp_oid: '1.3.6.1.4.1.2011.6.164.1.5.1.3.0'
-          key: acs.total.current
-          delay: '60s'
-          history: '7d'
-          trends: '365d'
-          value_type: FLOAT
-          units: A
-          description: 'hwAcsTotalCurrent. Total AC current of the AC group. Raw ÷ 10 = A.'
-          tags:
-            - tag: component
-              value: ac
-            - tag: scope
-              value: performance
-          preprocessing:
-            - type: MULTIPLIER
-              parameters:
-                - '0.1'
-            - type: IN_RANGE
-              parameters:
-                - '0'
-                - '1000'
-              error_handler: DISCARD_VALUE
         - uuid: 255c14c98dcb4eb385d927856e033bab
           name: 'CA: Quantidade de entradas'
           type: SNMP_AGENT
@@ -806,14 +771,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '300'
-                  error_handler: DISCARD_VALUE
             - uuid: 5dbb860503644fa7a312797b3956433a
               name: 'Retificador {#SNMPINDEX}: Tensão de saída CC'
               type: SNMP_AGENT
@@ -831,14 +794,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '65'
-                  error_handler: DISCARD_VALUE
             - uuid: 54fbba45148f4ce0a67b2a73e8ed73b0
               name: 'Retificador {#SNMPINDEX}: Potência CC de saída'
               type: SNMP_AGENT
@@ -856,11 +817,9 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
-                - type: IN_RANGE
+                - type: JAVASCRIPT
                   parameters:
-                    - '0'
-                    - '30000'
-                  error_handler: DISCARD_VALUE
+                    - 'return value==2147483647?0:value;'
             - uuid: 5ba999898e7d42d08df89e53a4dca327
               name: 'Retificador {#SNMPINDEX}: Tensão CA de entrada'
               type: SNMP_AGENT
@@ -878,14 +837,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '600'
-                  error_handler: DISCARD_VALUE
             - uuid: 4877ed9e8f18480e9b501c8ad5a017c2
               name: 'Retificador {#SNMPINDEX}: Eficiência'
               type: SNMP_AGENT
@@ -969,6 +926,9 @@ zabbix_export:
                   value: rectifier
                 - tag: scope
                   value: availability
+              dependencies:
+                - name: 'Bateria em descarga'
+                  expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
             - uuid: 6989ecf2412b433abc678100246fcf67
               name: 'Retificador {#SNMPINDEX}: Temperatura alta (>{$RECT.TEMP.MAX}°C)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/rect.temperature[{#SNMPINDEX}],#3)>{$RECT.TEMP.MAX}'
@@ -1228,14 +1188,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '600'
-                  error_handler: DISCARD_VALUE
             - uuid: a6e48d2e69704767b68efe6f548cd169
               name: 'CA {#SNMPINDEX}: Tensão Fase B'
               type: SNMP_AGENT
@@ -1253,14 +1211,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '600'
-                  error_handler: DISCARD_VALUE
             - uuid: b6502b1738124f03a22f1d0bbf4ba655
               name: 'CA {#SNMPINDEX}: Tensão Fase C'
               type: SNMP_AGENT
@@ -1278,14 +1234,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '600'
-                  error_handler: DISCARD_VALUE
             - uuid: 308565fa9294444d84d50ee3d0619401
               name: 'CA {#SNMPINDEX}: Corrente Fase A'
               type: SNMP_AGENT
@@ -1303,14 +1257,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '20000'
-                  error_handler: DISCARD_VALUE
             - uuid: e8bb92b7d0ec49e8b4017ae55dbf0643
               name: 'CA {#SNMPINDEX}: Corrente Fase B'
               type: SNMP_AGENT
@@ -1328,14 +1280,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '20000'
-                  error_handler: DISCARD_VALUE
             - uuid: b7935d44161c4d33aa9e40dda0eb84cd
               name: 'CA {#SNMPINDEX}: Corrente Fase C'
               type: SNMP_AGENT
@@ -1353,14 +1303,12 @@ zabbix_export:
                 - tag: scope
                   value: performance
               preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
                 - type: MULTIPLIER
                   parameters:
                     - '0.1'
-                - type: IN_RANGE
-                  parameters:
-                    - '0'
-                    - '20000'
-                  error_handler: DISCARD_VALUE
           trigger_prototypes:
             - uuid: ba8eb70d5b494f8bade6595a92a58c72
               name: 'CA {#SNMPINDEX}: Falha de alimentação CA (acOff/Fase ausente)'
@@ -1508,6 +1456,10 @@ zabbix_export:
                   value: dc
                 - tag: scope
                   value: performance
+              preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return value==2147483647?0:value;'
           trigger_prototypes:
             - uuid: c8e2f82a62774619949479a84e410870
               name: 'CC {#SNMPINDEX}: Tensão CC baixa (<{$VDC.MIN} V)'
