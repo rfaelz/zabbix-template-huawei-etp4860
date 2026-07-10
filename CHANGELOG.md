@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.3.0] - 2026-07-10
+
+### Fixed
+- Trigger dependencies now import correctly. The `dependencies` block requires `name` +
+  `expression` + `recovery_expression` when the target trigger uses `RECOVERY_EXPRESSION` mode;
+  the importer matches on all three fields. Previously only `name` + `expression` were present,
+  causing the import to fail with "depends on a trigger that does not exist".
+  Restored dependency for "Rectifier: In protection or off" → "Battery discharging".
+  Added new dependency for "Battery: SOC below threshold" → "Battery discharging".
+  Removed workaround description text and manual-UI instructions added in v1.2.1.
+
 ## [1.2.1] - 2026-07-10
 
 ### Fixed
