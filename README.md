@@ -91,10 +91,18 @@ Monitors the entire iSitePower stack via SNMP:
 
 ### Trigger dependencies
 
-- **Rectifier: In protection or off** → depends on **Battery discharging** (suppresses individual
-  module alerts during a site-wide AC outage, when all rectifiers shut down simultaneously).
-- **Battery: Backup time below threshold** → only fires when `batt.charge.status = disCharge(3)`
-  (prevents spurious alerts at rest; uses `<=` operator since firmware reports whole hours).
+The following logical dependencies must be added **manually via the Zabbix UI** after import
+(`Configuration → Triggers → <trigger> → Dependencies`). The Zabbix YAML importer cannot resolve
+dependencies between a trigger prototype and a regular template trigger, so they are not encoded
+in the YAML file.
+
+- **Rectifier: In protection or off** → add dependency on **Battery discharging** (suppresses
+  individual module alerts during a site-wide AC outage, when all rectifiers shut down simultaneously).
+- **Battery: SOC below threshold** → add dependency on **Battery discharging** (avoids a high-priority
+  SOC alert when the discharge cause is already known).
+
+**Battery: Backup time below threshold** is already gated in its expression on `batt.charge.status = disCharge(3)`,
+so no UI dependency is needed for that one.
 
 ---
 

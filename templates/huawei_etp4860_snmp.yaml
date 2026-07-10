@@ -927,15 +927,12 @@ zabbix_export:
               recovery_mode: RECOVERY_EXPRESSION
               recovery_expression: 'last(/Huawei ETP4860 Power System SNMP/rect.oper.status[{#SNMPINDEX}])=1'
               priority: WARNING
-              description: 'hwRectOperStatus = protect(3) or switchOff(5).'
+              description: 'hwRectOperStatus = protect(3) or switchOff(5). Recommended: add a manual dependency on trigger "Battery discharging" via the Zabbix UI after import (YAML import cannot resolve this dependency — Zabbix importer limitation).'
               tags:
                 - tag: component
                   value: rectifier
                 - tag: scope
                   value: availability
-              dependencies:
-                - name: 'Battery discharging'
-                  expression: 'last(/Huawei ETP4860 Power System SNMP/batt.charge.status)=3'
             - uuid: 6989ecf2412b433abc678100246fcf67
               name: 'Rectifier {#RECTNAME}: High temperature (>{$RECT.TEMP.MAX}°C)'
               expression: 'min(/Huawei ETP4860 Power System SNMP/rect.temperature[{#SNMPINDEX}],#3)>{$RECT.TEMP.MAX}'

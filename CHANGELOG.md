@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.2.1] - 2026-07-10
+
+### Fixed
+- Remove `dependencies` block from trigger prototype "Rectifier: In protection or off": the
+  Zabbix 7.0 YAML importer fails with "depends on a trigger that does not exist" when a trigger
+  prototype references a regular template trigger, even though the trigger already exists in the
+  database. Dependency works correctly when set via the UI. Added note to trigger description
+  and README instructing users to configure this (and the SOC→discharging dependency) manually
+  after import.
+
 ## [1.2.0] - 2026-07-10
 
 ### Changed
