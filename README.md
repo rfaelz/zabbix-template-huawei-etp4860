@@ -9,7 +9,6 @@ rectifier, using SNMP and full Low-Level Discovery.
 | **Controller** | iSitePower (hwSiteMonitorMIB) |
 | **Tested firmware** | iSitePower V100R022C00SPC121 |
 | **Zabbix version** | 7.0 LTS (import format 7.0) |
-| **SNMP** | v1 / v2c / v3 |
 | **OID root** | `1.3.6.1.4.1.2011.6.164` |
 
 ---
